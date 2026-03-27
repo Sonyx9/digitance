@@ -32,7 +32,21 @@ jobs:
         run: |
           REPO_NAME="${GITHUB_REPOSITORY#*/}"
           OWNER="${GITHUB_REPOSITORY_OWNER}"
-          if [ "$REPO_NAME" = "${OWNER}.github.io" ]; then
+          if [ -f "public/CNAME" ]; then
+            DOMAIN="$(tr -d '\r' < public/CNAME | head -n 1 | xargs)"
+            if [ -n "$DOMAIN" ]; then
+              echo "ASTRO_BASE=" >> "$GITHUB_ENV"
+              echo "ASTRO_SITE=https://${DOMAIN}" >> "$GITHUB_ENV"
+              echo "Detected custom domain: ${DOMAIN}"
+            fi
+          elif [ -f "CNAME" ]; then
+            DOMAIN="$(tr -d '\r' < CNAME | head -n 1 | xargs)"
+            if [ -n "$DOMAIN" ]; then
+              echo "ASTRO_BASE=" >> "$GITHUB_ENV"
+              echo "ASTRO_SITE=https://${DOMAIN}" >> "$GITHUB_ENV"
+              echo "Detected custom domain: ${DOMAIN}"
+            fi
+          elif [ "$REPO_NAME" = "${OWNER}.github.io" ]; then
             echo "ASTRO_BASE=" >> "$GITHUB_ENV"
             echo "ASTRO_SITE=https://${OWNER}.github.io" >> "$GITHUB_ENV"
           else
