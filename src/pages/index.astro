@@ -1,26 +1,5 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
-const defaultLocale = 'cs';
-const target = getRelativeLocaleUrl(defaultLocale, '');
-const base = import.meta.env.BASE_URL || '/';
+import CzechHomePage from './cs/index.astro';
 ---
 
-<!DOCTYPE html>
-<html lang="cs">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="refresh" content="0;url={target}" />
-    <title>Redirecting…</title>
-    <script is:inline define:vars={{ base }}>
-      (function () {
-        var locale = navigator.language && (navigator.language.startsWith('sk') ? 'sk' : navigator.language.startsWith('en') ? 'en' : 'cs');
-        var path = (base.replace(/\/$/, '') || '') + '/' + locale + '/';
-        window.location.replace(path);
-      })();
-    </script>
-  </head>
-  <body>
-    <p><a href={target}>Klikněte zde, pokud nejste přesměrováni.</a></p>
-  </body>
-</html>
+<CzechHomePage />

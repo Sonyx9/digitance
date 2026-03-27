@@ -106,7 +106,7 @@ export const aboutPageContent: Record<'cs' | 'sk' | 'en', AboutPageContent> = {
     summaryIntro: 'Jsme Digitance – digitální agentura zaměřená na tvorbu webů, e-shopů a online reklamy. Naší specializací je platforma Shoptet, díky které dokážeme vytvořit moderní a efektivní e-shop ušitý na míru každému klientovi – od malých podnikatelů až po etablované značky.\n\nKromě technické stránky se věnujeme i výkonnostnímu marketingu. Připojujeme a spravujeme reklamní kampaně v Google Ads, Skliku, na sociálních sítích a v mailingových nástrojích. Naším cílem je pomáhat firmám uspět v online prostoru – s důrazem na výsledky, jednoduchost a fér přístup.',
     summaryCredits: 'Copyright © 2025 Digitance',
     contactPills: [
-      { label: 'Kontaktní formulář', href: '/cs/kontakt/' },
+      { label: 'Kontaktní formulář', href: '/kontakt/' },
       { label: 'info@digitance.cz', href: 'mailto:info@digitance.cz' },
     ],
     experience: [

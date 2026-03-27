@@ -15,7 +15,7 @@ export default defineConfig({
     locales: ['cs', 'sk', 'en'],
     defaultLocale: 'cs',
     routing: {
-      prefixDefaultLocale: true,
+      prefixDefaultLocale: false,
     },
   },
   image: {
