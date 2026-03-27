@@ -14,9 +14,11 @@ interface Props {
   canonicalPath?: string;
   /** Obrázek pro og:image (absolutní nebo relativní k base). */
   image?: string;
+  /** Zobrazit spodní CTA blok před patičkou. */
+  showCta?: boolean;
 }
 
-const { title, description = '', canonicalPath, image } = Astro.props;
+const { title, description = '', canonicalPath, image, showCta = true } = Astro.props;
 const locale = Astro.currentLocale as Locale;
 const base = import.meta.env.BASE_URL;
 const site = Astro.site?.href ?? 'https://digitance.cz';
@@ -84,12 +86,14 @@ const contactUrl = getRelativeLocaleUrl(locale, getPathForLocaleWithSlug(locale,
     <main id="main-content" transition:animate="fade" transition:duration={300}>
       <slot />
     </main>
-    <CtaBlockSection
-      ctaBlockHeading={ctaCopy.heading}
-      ctaBlockSub={ctaCopy.sub}
-      ctaBlockButton={ctaCopy.button}
-      contactUrl={contactUrl}
-    />
+    {showCta && (
+      <CtaBlockSection
+        ctaBlockHeading={ctaCopy.heading}
+        ctaBlockSub={ctaCopy.sub}
+        ctaBlockButton={ctaCopy.button}
+        contactUrl={contactUrl}
+      />
+    )}
     <Footer />
   </body>
 </html>
