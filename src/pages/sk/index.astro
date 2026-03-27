@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getPathForLocale, type Locale } from '../../lib/i18n';
+import HeroSection from '../../components/HeroSection.astro';
+import AboutSection from '../../components/AboutSection.astro';
+import HowWeWorkSection from '../../components/HowWeWorkSection.astro';
+import ServicesSection from '../../components/ServicesSection.astro';
+import PortfolioSection from '../../components/PortfolioSection.astro';
+import ReferencesSection from '../../components/ReferencesSection.astro';
+
+const locale = Astro.currentLocale as Locale;
+const contactPath = getPathForLocale(locale, 'contact');
+const contactUrl = getRelativeLocaleUrl(locale, contactPath);
+
+const t = {
+  cs: {
+    welcome: 'Vítejte u Digitance',
+    headline: 'Specialisté na weby, e-shopy a PPC kampaně',
+    headlineLine1: 'Specialisté na weby,',
+    headlineLine2: 'e-shopy',
+    headlineLine3: 'a PPC kampaně',
+    sub: 'Pomůžeme vám zviditelnit se ve vyhledávačích, získat více zákazníků a zvýšit prodej. Vytváříme výkonné Shoptet e-shopy, efektivní WordPress weby a nastavujeme PPC kampaně, které přinášejí reálné výsledky. Spolehněte se na ověřené strategie a partnera, který rozumí online světu.',
+    cta: "Pojďme si promluvit",
+    clients: '250+ spokojených klientů',
+    solutions: 'Řešení pro brand identity',
+    aboutTag: 'Proč Digitance?',
+    aboutTitle: 'Digitance: vaši designoví partneři',
+    aboutTitleLine1: 'Proč Digitance?',
+    aboutTitleLine2: 'Naše strategie = váš růst',
+    aboutText: 'Každý klient je jedinečný. Proto vytváříme personalizované marketingové plány, které respektují vaše potřeby, cíle a rozpočet.',
+    aboutStatText: 'Inovativní přístup – Sledujeme nejnovější trendy a využíváme ty nejlepší nástroje, abyste byli vždy o krok před konkurencí.',
+    howTag: 'Jak pracujeme',
+    howTitle: 'Ukážeme vám, jak vaši značku posuneme výš',
+    howText: 'Společně definujeme cíle, navrhneme řešení, postavíme produkt a spustíme ho. Jednoduchý proces s jasnými milníky.',
+    howSteps: [
+      { number: '01', title: 'Analýza', description: 'Začínáme tím, že detailně pochopíme váš byznys a trh.' },
+      { number: '02', title: 'Strategie', description: 'Vytvoříme strategii, která osloví vaše ideální zákazníky. Transparentnost je základ. Díky pravidelným reportům vždy víte, jak vaše kampaň funguje.' },
+      { number: '03', title: 'Realizace', description: 'Naše kampaně jsou postavené na datech a neustále optimalizované tak, aby přinášely maximální návratnost investic.' },
+      { number: '04', title: 'Výsledky', description: 'Sledujeme metriky a pomáháme vám růst na základě reálných výsledků.' },
+    ],
+    steps: ['Define', 'Design', 'Build', 'Launch'] as const,
+    ready: 'Připraveno k předání!',
+    aboutServiceTags: ['Cílené PPC kampaně', 'SEO služby', 'Tvorba e-shopů', 'Tvorba webů', 'Emailing', 'Audit stránek a kampaní'],
+    servicesTag: 'Co děláme',
+    servicesHeading: 'Nejlepší služby pro vaše podnikání',
+    servicesIntro: 'Inovativní přístup – Sledujeme nejnovější trendy a využíváme ty nejlepší nástroje, abyste byli vždy o krok před konkurencí.',
+    portfolioTag: 'Portfolio',
+    portfolioHeading: 'Reference od našich klientů',
+    portfolioIntro: 'Pomáháme malým podnikatelům, středním firmám i velkým korporacím dosahovat jejich cíle v online prostoru. Přečtěte si, co o nás říkají ti, kdo nám již důvěřovali, a přidejte se k nim i vy.',
+    portfolioCta: 'Zobrazit všechny projekty',
+    referencesTag: 'Reference',
+    referencesHeading: 'Co o nás říkají klienti',
+    referencesIntro: 'Přečtěte si, jak spolupráci s námi vnímají zadavatelé a partneři z různých oborů.',
+    ctaBlockHeading: 'Pojďme spolu začít',
+    ctaBlockSub: 'Chcete vidět, co dokáže profesionální marketing? Kontaktujte nás ještě dnes a získejte bezplatnou konzultaci. Společně najdeme způsob, jak z vašeho byznysu udělat lídra na trhu.',
+    ctaBlockButton: 'Napište nám',
+  },
+  sk: {
+    welcome: 'Vitajte u Digitance',
+    headline: 'Špecialisti na weby, e-shopy a PPC kampane',
+    headlineLine1: 'Špecialisti na weby,',
+    headlineLine2: 'e-shopy',
+    headlineLine3: 'a PPC kampane',
+    sub: 'Pomôžeme vám zviditeľniť sa vo vyhľadávačoch, získať viac zákazníkov a zvýšiť predaj. Vytvárame výkonné Shoptet e-shopy, efektívne WordPress weby a nastavujeme PPC kampane, ktoré prinášajú reálne výsledky. Spoľahnite sa na overené stratégie a partnera, ktorý rozumie online svetu.',
+    cta: 'Poďme si pohovoriť',
+    clients: '250+ spokojných klientov',
+    solutions: 'Riešenia pre brand identity',
+    aboutTag: 'Prečo Digitance?',
+    aboutTitle: 'Digitance: vaši dizajnoví partneri',
+    aboutTitleLine1: 'Prečo Digitance?',
+    aboutTitleLine2: 'Naša stratégia = váš rast',
+    aboutText: 'Každý klient je unikátny. Preto vytvárame personalizované marketingové plány, ktoré rešpektujú vaše potreby, ciele a rozpočet.',
+    aboutStatText: 'Inovatívny prístup – Sledujeme najnovšie trendy a využívame tie najlepšie nástroje, aby ste boli vždy o krok pred konkurenciou.',
+    howTag: 'Ako pracujeme',
+    howTitle: 'Ukážeme vám, ako vašu značku posunieme vyššie',
+    howTitleLine1: 'Ukážeme vám, ako',
+    howTitleLine2: 'vašu značku posunieme vyššie',
+    howText: 'Spoločne definujeme ciele, navrhneme riešenia, postavíme produkt a spustíme ho.',
+    howSteps: [
+      { number: '01', title: 'Analýza', description: 'Začíname tým, že detailne pochopíme váš biznis a trh.' },
+      { number: '02', title: 'Stratégia', description: 'Vytvoríme stratégiu, ktorá osloví vašich ideálnych zákazníkov. Transparentnosť je základ. Vďaka pravidelným reportom vždy viete, ako vaša kampaň funguje.' },
+      { number: '03', title: 'Realizácia', description: 'Naše kampane sú postavené na dátach a neustále optimalizované tak, aby prinášali maximálnu návratnosť investícií.' },
+      { number: '04', title: 'Výsledky', description: 'Sledujeme metriky a pomáhame vám rásť na základe reálnych výsledkov.' },
+    ],
+    steps: ['Define', 'Design', 'Build', 'Launch'] as const,
+    ready: 'Pripravené na predanie!',
+    aboutServiceTags: ['Cielené PPC kampane', 'SEO služby', 'Tvorba e-shopov', 'Tvorba webstránok', 'Emailing', 'Audit stránok a kampaní'],
+    servicesTag: 'Čo robíme',
+    servicesHeading: 'Najlepšie služby pre Vaše podnikanie',
+    servicesIntro: 'Inovatívny prístup – Sledujeme najnovšie trendy a využívame tie najlepšie nástroje, aby ste boli vždy o krok pred konkurenciou.',
+    portfolioTag: 'Portfólio',
+    portfolioHeading: 'Referencie od našich klientov',
+    portfolioIntro: 'Pomáhame malým podnikateľom, stredným firmám aj veľkým korporáciám dosahovať ich ciele v online priestore. Prečítajte si, čo o nás hovoria tí, ktorí nám už dôverovali, a pridajte sa k nim aj vy.',
+    portfolioCta: 'Zobraziť všetky projekty',
+    referencesTag: 'Referencie',
+    referencesHeading: 'Čo o nás hovoria klienti',
+    referencesIntro: 'Prečítajte si, ako spoluprácu s nami vnímajú zadávatelia a partneri z rôznych odvetví.',
+    ctaBlockHeading: 'Poďme spolu začať',
+    ctaBlockSub: 'Chcete vidieť, čo dokáže profesionálny marketing? Kontaktujte nás ešte dnes a získajte bezplatnú konzultáciu. Spoločne nájdeme spôsob, ako z vášho biznisu spraviť lídra na trhu.',
+    ctaBlockButton: 'Napíšte nám',
+  },
+  en: {
+    welcome: 'Welcome to Digitance',
+    headline: 'Specialists in websites, e-shops and PPC campaigns',
+    headlineLine1: 'Specialists in websites,',
+    headlineLine2: 'e-shops',
+    headlineLine3: 'and PPC campaigns',
+    sub: 'We help you get visible in search engines, gain more customers and increase sales. We build powerful Shoptet e-shops, effective WordPress websites and set up PPC campaigns that deliver real results. Rely on proven strategies and a partner who understands the online world.',
+    cta: "Let's talk",
+    clients: '250+ Satisfied Clients',
+    solutions: 'Solutions for Brand Identity',
+    aboutTag: 'Why Digitance?',
+    aboutTitle: 'Meet Digitance: Your Design Partners',
+    aboutTitleLine1: 'Why Digitance?',
+    aboutTitleLine2: 'Our strategy = your growth',
+    aboutText: "Every client is unique. That's why we create personalised marketing plans that respect your needs, goals and budget.",
+    aboutStatText: "Innovative approach – We follow the latest trends and use the best tools so you're always one step ahead of the competition.",
+    howTag: 'How we work',
+    howTitle: 'Let us show you how we drive your brand to new heights',
+    howTitleLine1: 'Let us show you how we drive',
+    howTitleLine2: 'your brand to new heights',
+    howText: 'Together we define goals, design solutions, build the product and launch it. A simple process with clear milestones.',
+    howSteps: [
+      { number: '01', title: 'Analysis', description: 'We start by understanding your business and market in detail.' },
+      { number: '02', title: 'Strategy', description: 'We create a strategy that reaches your ideal customers. Transparency is key. Thanks to regular reports you always know how your campaign is performing.' },
+      { number: '03', title: 'Implementation', description: 'Our campaigns are data-driven and constantly optimized for maximum return on investment.' },
+      { number: '04', title: 'Results', description: 'We track metrics and help you grow based on real results.' },
+    ],
+    steps: ['Define', 'Design', 'Build', 'Launch'] as const,
+    ready: 'Ready to be delivered!',
+    aboutServiceTags: ['Targeted PPC campaigns', 'SEO services', 'E-shop creation', 'Website creation', 'Emailing', 'Website & campaign audit'],
+    servicesTag: 'What we do',
+    servicesHeading: 'The best services for your business',
+    servicesIntro: "Innovative approach – We follow the latest trends and use the best tools so you're always one step ahead of the competition.",
+    portfolioTag: 'Portfolio',
+    portfolioHeading: 'References from our clients',
+    portfolioIntro: "We help small businesses, medium-sized companies and large corporations achieve their goals in the online space. Read what those who have already trusted us say about us, and join them too.",
+    portfolioCta: 'See all projects',
+    referencesTag: 'Reviews',
+    referencesHeading: "Here's what people say about our work",
+    referencesIntro: 'Read what clients and partners from different industries say about working with us.',
+    ctaBlockHeading: "Let's start together",
+    ctaBlockSub: "Want to see what professional marketing can do? Contact us today and get a free consultation. Together we'll find a way to make your business a market leader.",
+    ctaBlockButton: 'Send us a message',
+  },
+}[locale];
+---
+
+<BaseLayout title="digitance. — Brands & Digital Experiences" description={t.sub}>
+  <article>
+    <HeroSection
+      t={{
+        welcome: t.welcome,
+        headline: t.headline,
+        headlineLine1: t.headlineLine1,
+        headlineLine2: t.headlineLine2,
+        headlineLine3: t.headlineLine3,
+        sub: t.sub,
+        cta: t.cta,
+        clients: t.clients,
+        solutions: t.solutions,
+      }}
+      locale={locale}
+      contactUrl={contactUrl}
+      servicesUrl={getRelativeLocaleUrl(locale, getPathForLocale(locale, 'services'))}
+    />
+
+    <AboutSection
+      aboutTag={t.aboutTag}
+      aboutTitleLine1={t.aboutTitleLine1}
+      aboutTitleLine2={t.aboutTitleLine2}
+      aboutText={t.aboutText}
+      aboutStatText={t.aboutStatText}
+      serviceTags={t.aboutServiceTags}
+      locale={locale}
+    />
+
+    <HowWeWorkSection
+      howTag={t.howTag}
+      howTitleLine1={t.howTitleLine1}
+      howTitleLine2={t.howTitleLine2}
+      howText={t.howText}
+      steps={t.howSteps}
+    />
+
+    <ServicesSection
+      servicesTag={t.servicesTag}
+      servicesHeading={t.servicesHeading}
+      servicesIntro={t.servicesIntro}
+      locale={locale}
+      servicesPath={getPathForLocale(locale, 'services')}
+    />
+
+    <PortfolioSection
+      portfolioTag={t.portfolioTag}
+      portfolioHeading={t.portfolioHeading}
+      portfolioIntro={t.portfolioIntro}
+      portfolioCta={t.portfolioCta}
+      locale={locale}
+      portfolioUrl={getPathForLocale(locale, 'portfolio')}
+    />
+
+    <ReferencesSection
+      referencesTag={t.referencesTag}
+      referencesHeading={t.referencesHeading}
+      referencesIntro={t.referencesIntro}
+      locale={locale}
+    />
+
+  </article>
+</BaseLayout>

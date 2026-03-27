@@ -1,0 +1,35 @@
+---
+/**
+ * Logo „digitance.“ – text #353A61, tečka nad i a závěrečná tečka #F3AD19.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+<span class:list={['logo-text', className]} aria-label="digitance">
+  dig<span class="logo-i"><span class="logo-dot logo-dot-i" style="color: #F3AD19" aria-hidden="true">.</span>ı</span>tance<span class="logo-dot" style="color: #F3AD19" aria-hidden="true">.</span>
+</span>
+
+<style>
+  .logo-text {
+    font: inherit;
+    color: #353A61;
+  }
+  .logo-dot {
+    color: #F3AD19 !important;
+  }
+  .logo-i {
+    position: relative;
+    display: inline-block;
+  }
+  .logo-i .logo-dot {
+    position: absolute;
+    left: 50%;
+    top: -0.12em;
+    transform: translateX(-50%);
+    font-size: 0.6em;
+    line-height: 1;
+    color: #F3AD19 !important;
+  }
+</style>

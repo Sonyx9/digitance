@@ -1,0 +1,23 @@
+---
+/**
+ * Pozadí hero sekce: mřížka jako na stránce O nás (jemné čáry 24px, bílé pozadí, radiální rozostření).
+ */
+---
+
+<div class="hero-grid-bg" aria-hidden="true"></div>
+
+<style>
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-color: #ffffff;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+</style>

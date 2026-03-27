@@ -1,0 +1,154 @@
+---
+/**
+ * Stránka Portfolio: stejný hero jako O nás (PageHero), pod ním mřížka screenshotů vybraných webů.
+ */
+import PageHero from './PageHero.astro';
+import { portfolioPageContent, portfolioItems } from '../data/portfolioPage';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = portfolioPageContent[locale];
+---
+
+<article class="portfolio-page">
+  <PageHero
+    heroLabel={t.heroLabel}
+    heroTitle={t.heroTitle}
+    heroSubLeft={t.heroSubLeft}
+  />
+
+  <section class="portfolio-page-content">
+    <div class="portfolio-page-inner">
+      {t.intro && <p class="portfolio-page-intro">{t.intro}</p>}
+      <div class="portfolio-page-grid" role="list">
+        {portfolioItems.map((item) => (
+          <article class="portfolio-page-card" role="listitem">
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="portfolio-page-card-link"
+            >
+              <div class="portfolio-page-card-image-wrap">
+                <img
+                  src={item.screenshot}
+                  alt=""
+                  class="portfolio-page-card-image"
+                  width="800"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="portfolio-page-card-image-fallback">{item.title}</span>
+              </div>
+              <h3 class="portfolio-page-card-title">{item.title}</h3>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</article>
+
+<style>
+  .portfolio-page {
+    background: #ffffff;
+  }
+  .portfolio-page-content {
+    padding: 2rem 1.5rem 4rem;
+    border-top: 1px solid rgba(26, 26, 46, 0.2);
+  }
+  @media (min-width: 768px) {
+    .portfolio-page-content {
+      padding: 2.5rem 2rem 5rem;
+    }
+  }
+  .portfolio-page-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+  .portfolio-page-intro {
+    font-size: 1rem;
+    color: var(--color-brand-gray, #6b7280);
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+  }
+  .portfolio-page-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .portfolio-page-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .portfolio-page-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+  }
+  .portfolio-page-card-link {
+    display: block;
+    border: 1px solid rgba(233, 236, 243, 0.9);
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .portfolio-page-card-link:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  }
+  .portfolio-page-card-image-wrap {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
+    overflow: hidden;
+  }
+  .portfolio-page-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .portfolio-page-card-image[data-failed] {
+    opacity: 0;
+  }
+  .portfolio-page-card-image-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-brand-gray, #64748b);
+    padding: 1rem;
+    text-align: center;
+    opacity: 0;
+    background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
+  }
+  .portfolio-page-card-image[data-failed] + .portfolio-page-card-image-fallback {
+    opacity: 1;
+  }
+  .portfolio-page-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0;
+    padding: 1rem 1.25rem;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.portfolio-page-card-image').forEach((img: HTMLImageElement) => {
+    img.addEventListener('error', () => img.setAttribute('data-failed', ''));
+  });
+</script>

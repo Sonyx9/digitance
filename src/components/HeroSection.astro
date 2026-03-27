@@ -1,0 +1,140 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import Reveal from './Reveal.astro';
+import Tag from './Tag.astro';
+import HeroGridBg from './HeroGridBg.astro';
+import HeroCta from './HeroCta.astro';
+import { heroBrandNames } from '../data/heroBrands';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  t: {
+    welcome: string;
+    headline: string;
+    /** Tři řádky nadpisu (pokud jsou, hvězdička je vedle druhého řádku) */
+    headlineLine1?: string;
+    headlineLine2?: string;
+    headlineLine3?: string;
+    sub: string;
+    cta: string;
+    clients: string;
+    solutions: string;
+  };
+  locale: Locale;
+  contactUrl: string;
+  servicesUrl: string;
+}
+
+const { t, locale, contactUrl, servicesUrl } = Astro.props;
+const useLines = t.headlineLine1 != null && t.headlineLine2 != null && t.headlineLine3 != null;
+---
+
+<section class="hero-section relative overflow-hidden px-4 pb-8 pt-8 md:px-6 md:pb-12 md:pt-16">
+  <HeroGridBg />
+  <div class="relative mx-auto max-w-7xl">
+    <div class="grid gap-8 lg:grid-cols-2 lg:gap-6 lg:items-center">
+      <div>
+        <Reveal class="block">
+          <Tag class="mb-6">{t.welcome}</Tag>
+          <h1 class="hero-headline font-display text-display-xl font-bold text-[#1a1a2e]">
+            {useLines ? (
+              <>
+                <span class="block">{t.headlineLine1}</span>
+                <span class="hero-headline-line-with-star inline-flex flex-wrap items-center gap-x-2">
+                  {t.headlineLine2}
+                </span>
+                <span class="block">{t.headlineLine3}</span>
+              </>
+            ) : (
+              <span class="inline-flex flex-wrap items-baseline gap-x-2">
+                {t.headline}
+              </span>
+            )}
+          </h1>
+          <p class="mt-6 max-w-xl text-brand-gray">
+            {t.sub}
+          </p>
+          <HeroCta href={contactUrl} label={t.cta} />
+        </Reveal>
+      </div>
+      <Reveal class="relative flex items-end justify-end">
+        <div class="w-full max-w-[520px] ml-auto">
+          <img
+            src="/hero-pozadi-digitance.png"
+            alt="Pozadí Digitance"
+            class="h-auto w-full"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </Reveal>
+    </div>
+
+    <!-- Referenční loga od začátku do konce (celá šířka sekce) -->
+    <div class="brands-carousel-wrap mt-8 md:mt-12 -mx-4 md:-mx-6 px-4 md:px-6">
+      <div class="brands-carousel" aria-label="Partneři a klienti">
+        <div class="brands-carousel-track">
+          {heroBrandNames.map((name) => (
+            <span class="brands-carousel-item">{name}</span>
+          ))}
+        </div>
+        <div class="brands-carousel-track" aria-hidden="true">
+          {heroBrandNames.map((name) => (
+            <span class="brands-carousel-item">{name}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    background: transparent;
+  }
+  .hero-headline {
+    text-wrap: balance;
+  }
+  .hero-headline-line-with-star {
+    display: inline-flex;
+    align-items: center;
+  }
+  .brands-carousel-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .brands-carousel {
+    display: flex;
+    width: max-content;
+    animation: brands-scroll 35s linear infinite;
+  }
+  .brands-carousel-track {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+    padding: 0.5rem 0;
+  }
+  .brands-carousel-item {
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgb(115 115 115);
+    white-space: nowrap;
+  }
+  .brands-carousel-item::after {
+    content: '+';
+    margin-left: 1.5rem;
+    color: rgb(163 163 163);
+    font-weight: 300;
+  }
+  @keyframes brands-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .brands-carousel {
+      animation: none;
+    }
+  }
+</style>

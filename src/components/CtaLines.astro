@@ -1,0 +1,36 @@
+---
+/**
+ * Tři čárky u CTA – dekorativní prvek vpravo od tlačítka.
+ */
+---
+
+<span class="cta-lines" aria-hidden="true">
+  <span class="cta-line cta-line-1"></span>
+  <span class="cta-line cta-line-2"></span>
+  <span class="cta-line cta-line-3"></span>
+</span>
+
+<style>
+  .cta-lines {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .cta-line {
+    display: block;
+    width: 3px;
+    height: 20px;
+    background: currentColor;
+    border-radius: 2px;
+    opacity: 0.4;
+    transform-origin: center right;
+  }
+  .cta-line-1 { transform: rotate(-25deg); }
+  .cta-line-2 { transform: rotate(0deg); height: 24px; opacity: 0.5; }
+  .cta-line-3 { transform: rotate(25deg); }
+  :global(.cta-with-lines:hover) .cta-line {
+    opacity: 0.6;
+  }
+</style>

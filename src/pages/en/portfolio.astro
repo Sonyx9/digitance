@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { type Locale } from '../../lib/i18n';
+import PortfolioPageContent from '../../components/PortfolioPageContent.astro';
+import { portfolioPageContent } from '../../data/portfolioPage';
+
+const locale = Astro.currentLocale as Locale;
+const t = portfolioPageContent[locale];
+---
+
+<BaseLayout title={t.title} description={t.intro ?? t.heroSubLeft}>
+  <PortfolioPageContent locale={locale} />
+</BaseLayout>

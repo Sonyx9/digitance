@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getPathForLocale, type Locale } from '../../../lib/i18n';
+import { services, serviceTitles, serviceDescriptions } from '../../../data/services';
+import { getServicePageData } from '../../../data/servicePages';
+import type { ServiceSlug } from '../../../data/services';
+import ServicePageContent from '../../../components/ServicePageContent.astro';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug } }));
+}
+
+const locale = Astro.currentLocale as Locale;
+const slug = Astro.params.slug as ServiceSlug;
+const service = services.find((s) => s.slug === slug);
+if (!service) return Astro.redirect(getRelativeLocaleUrl(locale, getPathForLocale(locale, 'services')));
+
+const pageData = getServicePageData(slug, locale);
+const title = pageData?.heroTitle ?? serviceTitles[slug]?.[locale] ?? slug;
+const description = serviceDescriptions[slug]?.[locale] ?? '';
+const servicesPath = getPathForLocale(locale, 'services');
+const listUrl = getRelativeLocaleUrl(locale, servicesPath);
+const contactPath = getPathForLocale(locale, 'contact');
+const contactUrl = getRelativeLocaleUrl(locale, contactPath);
+
+const t = {
+  heroLabel: 'Služba',
+  heroSubLeft: '',
+  backLabel: '← Služby',
+  ctaLabel: 'Pojďme si promluvit',
+};
+---
+
+<BaseLayout title={`${title} — digitance.`} description={description}>
+  <ServicePageContent
+    locale={locale}
+    heroLabel={t.heroLabel}
+    heroTitle={title}
+    heroSubLeft={t.heroSubLeft}
+    description={description}
+    listUrl={listUrl}
+    backLabel={t.backLabel}
+    ctaLabel={t.ctaLabel}
+    contactUrl={contactUrl}
+    sections={pageData?.sections}
+  />
+</BaseLayout>

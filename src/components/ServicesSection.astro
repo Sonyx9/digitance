@@ -1,0 +1,98 @@
+---
+/**
+ * Sekce služeb: tmavé pozadí, tag „Co děláme“, nadpis + úvodní text, mřížka 6 karet.
+ * Každá karta: ikona (film strip / obrazovka), název, popis, tenký světlý okraj, odkaz na detail služby.
+ */
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import Tag from './Tag.astro';
+import { services, serviceTitles, serviceDescriptions } from '../data/services';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  servicesTag: string;
+  servicesHeading: string;
+  servicesIntro: string;
+  locale: Locale;
+  servicesPath: string;
+}
+
+const { servicesTag, servicesHeading, servicesIntro, locale, servicesPath } = Astro.props;
+
+const iconProps = { width: 40, height: 40, viewBox: '0 0 24 24', fill: 'none' as const, xmlns: 'http://www.w3.org/2000/svg', stroke: 'currentColor', 'stroke-width': 1.5, 'stroke-linecap': 'round' as const, 'stroke-linejoin': 'round' as const };
+---
+
+<section class="services-section px-4 py-16 md:px-6 md:py-24">
+  <div class="mx-auto max-w-7xl">
+    <div class="grid gap-8 lg:grid-cols-[1fr,1fr] lg:gap-12 lg:items-start">
+      <div>
+        <Tag>{servicesTag}</Tag>
+        <h2 class="mt-4 font-display text-display-lg font-bold text-white max-w-xl">
+          {servicesHeading}
+        </h2>
+      </div>
+      <p class="text-slate-200/90 leading-relaxed max-w-xl lg:pt-12">
+        {servicesIntro}
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((s) => {
+        const href = getRelativeLocaleUrl(locale, `${servicesPath}/${s.slug}`);
+        const title = serviceTitles[s.slug]?.[locale] ?? s.slug;
+        const desc = serviceDescriptions[s.slug]?.[locale] ?? '';
+        return (
+          <a
+            href={href}
+            class="services-card block rounded-2xl border border-white/20 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#F3AD19]/60"
+          >
+            <span class="services-icon mb-4 inline-block" aria-hidden="true">
+              {s.slug === 'ppc-kampane' && (
+                <svg {...iconProps}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+              )}
+              {s.slug === 'seo-sluzby' && (
+                <svg {...iconProps}><path d="M3 17l6-6 4 4 8-8"/><path d="M21 9v6h-6"/></svg>
+              )}
+              {s.slug === 'tvorba-e-shopov' && (
+                <svg {...iconProps}><path d="M4 8h16l-1 12H5L4 8z"/><path d="M8 8V5a2 2 0 012-2h4a2 2 0 012 2v3"/></svg>
+              )}
+              {s.slug === 'tvorba-webov' && (
+                <svg {...iconProps}><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              )}
+              {s.slug === 'newslettery' && (
+                <svg {...iconProps}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6L12 13 2 6"/></svg>
+              )}
+              {s.slug === 'audit-kampane' && (
+                <svg {...iconProps}><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              )}
+            </span>
+            <h3 class="text-lg font-semibold text-white">{title}</h3>
+            <p class="mt-2 text-sm text-slate-200/85 leading-relaxed">{desc}</p>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-section {
+    background:
+      radial-gradient(circle at 12% 18%, rgba(243, 173, 25, 0.1), transparent 34%),
+      radial-gradient(circle at 90% 88%, rgba(63, 68, 105, 0.28), transparent 42%),
+      linear-gradient(145deg, #2a2f4d 0%, #353a61 46%, #222742 100%);
+  }
+  .services-card {
+    background: rgba(21, 27, 48, 0.38);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(2px);
+  }
+  .services-card:hover {
+    background: rgba(30, 37, 64, 0.62);
+    box-shadow:
+      0 12px 30px rgba(12, 18, 35, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+  .services-icon {
+    color: #f8fafc;
+  }
+</style>

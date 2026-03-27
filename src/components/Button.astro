@@ -1,0 +1,27 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  class?: string;
+  arrow?: boolean;
+}
+const { href, variant = 'primary', class: className = '', arrow = false } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    'inline-flex items-center gap-2 rounded-2xl px-6 py-3 font-medium transition-all duration-200 animate-gpu',
+    variant === 'primary' && 'bg-[#353A61] text-brand-white hover:bg-[#2d3153]',
+    variant === 'secondary' && 'bg-brand-cloud text-brand-ink hover:bg-brand-silver',
+    variant === 'ghost' && 'text-brand-ink hover:bg-brand-cloud',
+    className,
+  ]}
+>
+  <slot />
+  {arrow && (
+    <span class="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">
+      →
+    </span>
+  )}
+</a>

@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPathForLocale, type Locale } from '../../lib/i18n';
+import Tag from '../../components/Tag.astro';
+import Reveal from '../../components/Reveal.astro';
+
+const locale = Astro.currentLocale as Locale;
+
+const t = {
+  cs: {
+    tag: 'Kontakt',
+    title: 'Pojďme navrhnout váš projekt',
+    sub: 'Chcete vidět, jak proměníme vaši značku v jedinečný styl? Napište nám!',
+    cta: 'Napište nám',
+    email: 'E-mail',
+    message: 'Zpráva',
+    send: 'Odeslat',
+  },
+  sk: {
+    tag: 'Kontakt',
+    title: 'Poďme navrhnúť váš projekt',
+    sub: 'Chcete vidieť, ako premeníme vašu značku na jedinečný štýl? Napíšte nám!',
+    cta: 'Napíšte nám',
+    email: 'E-mail',
+    message: 'Správa',
+    send: 'Odoslať',
+  },
+  en: {
+    tag: 'Contact',
+    title: "Let's start designing your project",
+    sub: 'Want to see how we transform your brand into a unique style? Send us a message!',
+    cta: 'Send us a message',
+    email: 'Email',
+    message: 'Message',
+    send: 'Send',
+  },
+}[locale];
+---
+
+<BaseLayout title={`${t.title} — digitance.`} description={t.sub}>
+  <article>
+    <section class="bg-brand-ink px-4 py-16 text-brand-white md:px-6 md:py-24">
+      <div class="mx-auto max-w-2xl text-center">
+        <Reveal>
+          <Tag class="mb-4">{t.tag}</Tag>
+          <h1 class="font-display text-display-xl font-bold">{t.title}</h1>
+          <p class="mt-4 text-brand-silver">{t.sub}</p>
+          <a
+            href="mailto:info@digitance.eu"
+            class="mt-8 inline-flex items-center gap-2 rounded-2xl bg-[#353A61] px-8 py-4 font-medium text-white transition-colors hover:bg-[#2d3153] hover:text-white"
+          >
+            {t.cta}
+            <span aria-hidden="true">→</span>
+          </a>
+        </Reveal>
+      </div>
+    </section>
+    <section class="border-t border-brand-cloud bg-brand-white px-4 py-16 md:px-6 md:py-24">
+      <div class="mx-auto max-w-5xl">
+        <Reveal>
+          <div class="grid gap-6 md:grid-cols-2">
+            <article class="rounded-2xl border border-brand-cloud bg-white p-6 shadow-sm">
+              <h2 class="text-xl font-semibold text-brand-ink">Czech Republic</h2>
+              <ul class="mt-4 space-y-2 text-brand-gray">
+                <li>📱 +420 605 907 866</li>
+                <li>✉️ <a href="mailto:lukas.koula@digitance.eu" class="hover:text-brand-ink">lukas.koula@digitance.eu</a></li>
+                <li>📍 Prague, Liberec</li>
+              </ul>
+            </article>
+            <article class="rounded-2xl border border-brand-cloud bg-white p-6 shadow-sm">
+              <h2 class="text-xl font-semibold text-brand-ink">Slovakia</h2>
+              <ul class="mt-4 space-y-2 text-brand-gray">
+                <li>📱 +421 948 148 238</li>
+                <li>📧 <a href="mailto:stanislav.hazucha@digitance.eu" class="hover:text-brand-ink">stanislav.hazucha@digitance.eu</a></li>
+                <li>📍 Liptovský Mikuláš</li>
+              </ul>
+            </article>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

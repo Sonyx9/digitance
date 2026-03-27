@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { type Locale } from '../../lib/i18n';
+import AboutPageContent from '../../components/AboutPageContent.astro';
+import { aboutPageContent } from '../../data/aboutPage';
+
+const locale = Astro.currentLocale as Locale;
+const t = aboutPageContent[locale];
+---
+
+<BaseLayout title={`${t.title} — digitance.`} description={t.intro1}>
+  <AboutPageContent
+    heroTitle={t.heroTitle}
+    heroLabel={t.heroLabel}
+    heroSubLeft={t.heroSubLeft}
+    heroSubRight={t.heroSubRight}
+    summaryName={t.summaryName}
+    summaryRole={t.summaryRole}
+    summaryIntro={t.summaryIntro}
+    summaryCredits={t.summaryCredits}
+    introLabel={t.introLabel}
+    misiaTitle={t.misiaTitle}
+    misiaText={t.misiaText}
+    viziaTitle={t.viziaTitle}
+    viziaText={t.viziaText}
+    intro1={t.intro1}
+    intro2={t.intro2}
+    contactPills={t.contactPills}
+    experience={t.experience}
+    tools={t.tools}
+    toolsTitle={t.toolsTitle}
+    experienceTitle={t.experienceTitle}
+    hodnotyTitle={t.hodnotyTitle}
+    hodnotyItems={t.hodnotyItems}
+    languagesTitle={t.languagesTitle}
+    languages={t.languages}
+    teamTitle={t.teamTitle}
+    team={t.team}
+  />
+</BaseLayout>
+

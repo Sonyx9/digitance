@@ -1,0 +1,911 @@
+---
+/**
+ * Stránka jedné služby – stejný styl jako O nás: PageHero + obsahový blok.
+ * Podporuje jednoduchý režim (description + CTA) nebo rozšířený (sections).
+ */
+import PageHero from './PageHero.astro';
+import type { Locale } from '../lib/i18n';
+import type { ServiceSection } from '../data/servicePages';
+
+interface Props {
+  locale: Locale;
+  heroLabel: string;
+  heroTitle: string;
+  heroSubLeft: string;
+  description: string;
+  listUrl: string;
+  backLabel: string;
+  ctaLabel: string;
+  contactUrl: string;
+  /** Rozšířený obsah – když je zadán, ignoruje se description a ctaLabel */
+  sections?: ServiceSection[];
+}
+
+const { locale, heroLabel, heroTitle, heroSubLeft, description, listUrl, backLabel, ctaLabel, contactUrl, sections } = Astro.props;
+const useSections = sections && sections.length > 0;
+
+// Seskupit za sebou jdoucí serviceItem do mřížky a pricing vedle sebe
+type RenderNode =
+  | { kind: 'single'; block: ServiceSection }
+  | { kind: 'serviceItemGroup'; items: Extract<ServiceSection, { type: 'serviceItem' }>[] }
+  | { kind: 'pricingGroup'; items: Extract<ServiceSection, { type: 'pricing' }>[] };
+
+function groupSections(sec: ServiceSection[]): RenderNode[] {
+  const out: RenderNode[] = [];
+  let i = 0;
+  while (i < sec.length) {
+    const b = sec[i];
+    if (b.type === 'serviceItem') {
+      const items: Extract<ServiceSection, { type: 'serviceItem' }>[] = [];
+      while (i < sec.length && sec[i].type === 'serviceItem') {
+        items.push(sec[i] as Extract<ServiceSection, { type: 'serviceItem' }>);
+        i++;
+      }
+      out.push({ kind: 'serviceItemGroup', items });
+      continue;
+    }
+    if (b.type === 'pricing') {
+      const items: Extract<ServiceSection, { type: 'pricing' }>[] = [];
+      while (i < sec.length && sec[i].type === 'pricing') {
+        items.push(sec[i] as Extract<ServiceSection, { type: 'pricing' }>);
+        i++;
+      }
+      out.push({ kind: 'pricingGroup', items });
+      continue;
+    }
+    out.push({ kind: 'single', block: b });
+    i++;
+  }
+  return out;
+}
+
+const nodes = useSections ? groupSections(sections!) : [];
+---
+
+<article class="service-page">
+  <PageHero heroLabel={heroLabel} heroTitle={heroTitle} heroSubLeft={heroSubLeft} />
+
+  <section class="service-page-content">
+    <div class="service-page-content-inner">
+      {useSections ? (
+        <div class="service-page-sections">
+          {nodes.map((node, nodeIdx) => {
+            if (node.kind === 'serviceItemGroup') {
+              return (
+                <div class="service-page-service-grid">
+                  {node.items.map((block) => (
+                    <div class="service-page-service-item">
+                      <span class="service-page-service-icon" aria-hidden="true">
+                        {block.icon === 'search' && (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+)}
+{block.icon === 'social' && (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+)}
+{block.icon === 'chart' && (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+)}
+{block.icon === 'message' && (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+)}
+{block.icon === 'settings' && (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+)}
+                      </span>
+                      <div class="service-page-service-body">
+                        <h3 class="service-page-service-title">{block.title}</h3>
+                        <p class="service-page-service-desc">{block.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            }
+            if (node.kind === 'pricingGroup') {
+              return (
+                <div class:list={[
+                  'service-page-pricing-row',
+                  node.items.length === 1 && 'service-page-pricing-row--single',
+                ]}>
+                  {node.items.map((block) => (
+                    <div class="service-page-pricing">
+                      <h3 class="service-page-pricing-title">{block.title}</h3>
+                      <ul class="service-page-pricing-list">
+                        {block.items.map((item) => (
+                          <li class="service-page-pricing-item">
+                            <span class="service-page-pricing-label">{item.label}</span>
+                            {item.price && <span class="service-page-pricing-price">{item.price}</span>}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              );
+            }
+            const block = node.block;
+            if (block.type === 'paragraph') {
+              return <p class="service-page-p">{block.text}</p>;
+            }
+            if (block.type === 'image') {
+              const img = <img src={block.src} alt={block.alt} class="service-page-image" loading="lazy" />;
+              return (
+                <div class="service-page-image-wrap">
+                  {block.href ? (
+                    <a href={block.href} target="_blank" rel="noopener noreferrer" class="service-page-image-link" aria-label={block.alt}>
+                      {img}
+                    </a>
+                  ) : img}
+                </div>
+              );
+            }
+            if (block.type === 'heading') {
+              return (
+                <h2 class="service-page-h2">
+                  <span class="service-page-h2-accent"></span>
+                  {block.text}
+                </h2>
+              );
+            }
+            if (block.type === 'list') {
+              return (
+                <div class="service-page-list-wrap">
+                  <ul class="service-page-ul">
+                    {block.items.map((item) => (
+                      <li class="service-page-li">{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+            if (block.type === 'quote') {
+              return (
+                <blockquote class="service-page-quote">
+                  <span class="service-page-quote-mark" aria-hidden="true">"</span>
+                  <p>{block.text}</p>
+                </blockquote>
+              );
+            }
+            if (block.type === 'step') {
+              return (
+                <div class="service-page-step">
+                  <span class="service-page-step-num" aria-hidden="true"></span>
+                  <div>
+                    <h3 class="service-page-step-title">{block.title}</h3>
+                    <p class="service-page-step-desc">{block.desc}</p>
+                  </div>
+                </div>
+              );
+            }
+            if (block.type === 'eshopShowcase') {
+              return (
+                <div class="service-page-showcase">
+                  <h2 class="service-page-h2">
+                    <span class="service-page-h2-accent"></span>
+                    {block.heading}
+                  </h2>
+                  <div class="service-page-showcase-grid">
+                    {block.items.map((item) => (
+                      <a href={item.url.startsWith('http') ? item.url : `https://${item.url}`} target="_blank" rel="noopener noreferrer" class="service-page-showcase-card">
+                        <div class="service-page-showcase-image-wrap">
+                          {item.image ? (
+                            <>
+                              <img src={item.image} alt={`Náhled e-shopu ${item.name}`} class="service-page-showcase-image" loading="lazy" data-showcase-img />
+                              <div class="service-page-showcase-image-placeholder service-page-showcase-image-fallback" aria-hidden="true">{item.name}</div>
+                            </>
+                          ) : (
+                            <div class="service-page-showcase-image-placeholder" aria-hidden="true">{item.name}</div>
+                          )}
+                        </div>
+                        <span class="service-page-showcase-name">{item.name}</span>
+                        <span class="service-page-showcase-link-text">{item.url.replace(/^https?:\/\//, '')}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+            if (block.type === 'testimonialsBlock') {
+              const refId = `service-ref-carousel-${nodeIdx}`;
+              return (
+                <div class="service-page-testimonials">
+                  <h2 class="service-page-h2">
+                    <span class="service-page-h2-accent"></span>
+                    {block.heading}
+                  </h2>
+                  <div class="service-page-testimonials-carousel-wrap">
+                    <div
+                      class="service-page-testimonials-carousel"
+                      id={refId}
+                      role="list"
+                    >
+                      {block.items.map((t, i) => (
+                        <blockquote class="service-page-testimonial" role="listitem" data-ref-index={i}>
+                          <p class="service-page-testimonial-quote">{t.quote}</p>
+                          <footer class="service-page-testimonial-footer">
+                            <cite class="service-page-testimonial-author">{t.author}</cite>
+                            {t.company && <span class="service-page-testimonial-company">{t.company}</span>}
+                          </footer>
+                        </blockquote>
+                      ))}
+                    </div>
+                    <div class="service-page-testimonials-dots" role="tablist" aria-label="Reference">
+                      {block.items.map((_, i) => (
+                        <button
+                          type="button"
+                          class="service-page-testimonial-dot"
+                          aria-label={`Reference ${i + 1}`}
+                          aria-selected={i === 0}
+                          data-ref-dot={i}
+                          data-ref-carousel={refId}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+            if (block.type === 'cta') {
+              return (
+                <div class="service-page-cta-block">
+                  {block.text && <p class="service-page-cta-text">{block.text}</p>}
+                  <a href={contactUrl} class="service-page-cta">{block.button}</a>
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+      ) : (
+        <div class="service-page-box service-page-box--simple">
+          <p class="service-page-description">{description}</p>
+          <p class="service-page-cta-wrap">
+            <a href={contactUrl} class="service-page-cta">{ctaLabel}</a>
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+</article>
+
+<style>
+  .service-page {
+    position: relative;
+    min-height: 100vh;
+    color: var(--color-brand-ink, #1a1a2e);
+    background: #ffffff;
+  }
+
+  .service-page-content {
+    padding: 2rem 1.5rem 4rem;
+    border-top: 1px solid rgba(26, 26, 46, 0.08);
+  }
+  @media (min-width: 768px) {
+    .service-page-content {
+      padding: 3rem 2rem 5rem;
+    }
+  }
+
+  .service-page-content-inner {
+    max-width: 52rem;
+    margin: 0 auto;
+  }
+
+  /* Jednoduchý režim (bez sekcí) */
+  .service-page-box--simple {
+    background: #ffffff;
+    border: 1px solid #E9ECF3;
+    border-radius: 1.25rem;
+    box-shadow: 0 2px 8px rgba(26, 26, 46, 0.06);
+    padding: 2rem 1.75rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-page-box--simple::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #F3AD19;
+    border-radius: 1.25rem 0 0 1.25rem;
+  }
+  .service-page-description {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 1.5rem;
+    white-space: pre-line;
+  }
+  .service-page-cta-wrap {
+    margin: 0;
+  }
+  .service-page-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    background: #353A61;
+    color: #ffffff;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .service-page-cta:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+  }
+
+  /* Rozšířený obsah – sekce */
+  .service-page-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    counter-reset: step;
+  }
+
+  .service-page-p {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 1.5rem;
+  }
+  .service-page-image-wrap {
+    margin: 0 0 1.75rem;
+  }
+  .service-page-image {
+    display: block;
+    width: min(340px, 100%);
+    height: auto;
+  }
+
+  .service-page-h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 2.25rem 0 1rem;
+    letter-spacing: -0.02em;
+  }
+  .service-page-h2:first-child {
+    margin-top: 0;
+  }
+  .service-page-h2-accent {
+    flex-shrink: 0;
+    width: 4px;
+    height: 1.25em;
+    background: #F3AD19;
+    border-radius: 2px;
+  }
+
+  .service-page-list-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    background: #ffffff;
+    border: 1px solid #E9ECF3;
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem 1.25rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(26, 26, 46, 0.04);
+  }
+  .service-page-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .service-page-li {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-brand-ink, #1a1a2e);
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  .service-page-li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #F3AD19;
+  }
+
+  .service-page-quote {
+    background: #353A61;
+    color: #ffffff;
+    border-radius: 1.25rem;
+    padding: 2rem 2rem 2rem 2.5rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-page-quote::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #F3AD19;
+    border-radius: 1.25rem 0 0 1.25rem;
+  }
+  .service-page-quote-mark {
+    position: absolute;
+    top: 0.5rem;
+    left: 1.5rem;
+    font-size: 3rem;
+    font-family: Georgia, serif;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.2);
+  }
+  .service-page-quote p {
+    font-size: 1.0625rem;
+    font-style: italic;
+    line-height: 1.65;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .service-page-service-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .service-page-service-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .service-page-service-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+  .service-page-service-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background: #ffffff;
+    border: 1px solid #E9ECF3;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(26, 26, 46, 0.04);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .service-page-service-grid .service-page-service-item {
+    margin-bottom: 0;
+  }
+  .service-page-service-item:hover {
+    border-color: rgba(53, 58, 97, 0.2);
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.06);
+  }
+  .service-page-service-icon {
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(53, 58, 97, 0.08);
+    color: #353A61;
+    border-radius: 0.75rem;
+  }
+  .service-page-service-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .service-page-service-body {
+    min-width: 0;
+  }
+  .service-page-service-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.25rem;
+  }
+  .service-page-service-desc {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-brand-gray, #6b7280);
+    margin: 0;
+  }
+
+  .service-page-step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-left: 2px solid #E9ECF3;
+    margin-left: 0.75rem;
+    padding-left: 1.25rem;
+    position: relative;
+    counter-increment: step;
+  }
+  .service-page-step-num {
+    position: absolute;
+    left: -0.5rem;
+    top: 1rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: #F3AD19;
+    color: #1a1a2e;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-50%);
+  }
+  .service-page-step-num::before {
+    content: counter(step);
+  }
+  .service-page-step-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.2rem;
+  }
+  .service-page-step-desc {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-brand-gray, #6b7280);
+    margin: 0;
+  }
+
+  .service-page-cta-block {
+    background: rgba(243, 173, 25, 0.08);
+    border: 1px solid rgba(243, 173, 25, 0.25);
+    border-radius: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    margin: 1.5rem 0;
+  }
+  .service-page-cta-text {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 1rem;
+  }
+  .service-page-cta-block .service-page-cta {
+    margin-top: 0.25rem;
+  }
+
+  .service-page-pricing-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+  }
+  .service-page-pricing-row--single {
+    max-width: 100%;
+  }
+  @media (min-width: 640px) {
+    .service-page-pricing-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+    }
+    .service-page-pricing-row--single {
+      grid-template-columns: 1fr;
+    }
+  }
+  .service-page-pricing {
+    background: linear-gradient(165deg, #ffffff 0%, #fafbff 100%);
+    border: 1px solid rgba(53, 58, 97, 0.12);
+    border-radius: 1.25rem;
+    padding: 1.75rem 1.75rem 1.5rem 2rem;
+    box-shadow: 0 4px 20px rgba(26, 26, 46, 0.06), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-page-pricing-row .service-page-pricing {
+    margin: 0;
+  }
+  .service-page-pricing::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: #F3AD19;
+    border-radius: 1.25rem 0 0 1.25rem;
+  }
+  .service-page-pricing-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #353A61;
+    margin: 0 0 1.25rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(53, 58, 97, 0.1);
+  }
+  .service-page-pricing-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .service-page-pricing-item {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(233, 236, 243, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .service-page-pricing-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .service-page-pricing-item:first-child {
+    padding-top: 0;
+  }
+  .service-page-pricing-label {
+    flex: 1;
+    min-width: 0;
+    color: var(--color-brand-ink, #1a1a2e);
+  }
+  .service-page-pricing-price {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-brand-ink, #1a1a2e);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .service-page-showcase {
+    margin: 2.5rem 0;
+  }
+  .service-page-showcase .service-page-h2 {
+    margin-top: 0;
+  }
+  .service-page-showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  @media (min-width: 640px) {
+    .service-page-showcase-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .service-page-showcase-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    background: #ffffff;
+    border: 1px solid #E9ECF3;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(26, 26, 46, 0.04);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+  }
+  .service-page-showcase-card:hover {
+    border-color: rgba(53, 58, 97, 0.2);
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.06);
+    transform: translateY(-2px);
+  }
+  .service-page-showcase-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #F3AD19;
+    border-radius: 1rem 0 0 1rem;
+    z-index: 1;
+  }
+  .service-page-showcase-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #f3f4f6;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .service-page-showcase-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .service-page-showcase-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #9ca3af;
+    text-align: center;
+    padding: 1rem;
+  }
+  .service-page-showcase-image-fallback {
+    display: none;
+    position: absolute;
+    inset: 0;
+  }
+  .service-page-showcase-image-wrap:has(.service-page-showcase-image[data-failed]) .service-page-showcase-image-fallback {
+    display: flex;
+  }
+  .service-page-showcase-image[data-failed] {
+    display: none;
+  }
+  .service-page-showcase-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-brand-ink, #1a1a2e);
+    padding: 1rem 1.25rem 0.25rem;
+  }
+  .service-page-showcase-link-text {
+    font-size: 0.875rem;
+    color: var(--color-brand-gray, #6b7280);
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  .service-page-testimonials {
+    margin: 2.5rem 0;
+  }
+  .service-page-testimonials .service-page-h2 {
+    margin-top: 0;
+  }
+  .service-page-testimonials-carousel-wrap {
+    margin-top: 1rem;
+    position: relative;
+  }
+  .service-page-testimonials-carousel {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1.5rem;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .service-page-testimonials-carousel::-webkit-scrollbar {
+    height: 6px;
+  }
+  .service-page-testimonials-carousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  .service-page-testimonials-carousel::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+  .service-page-testimonials-carousel .service-page-testimonial {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    min-width: 0;
+  }
+  @media (min-width: 640px) {
+    .service-page-testimonials-carousel .service-page-testimonial {
+      flex: 0 0 calc(100% - 2rem);
+    }
+  }
+  .service-page-testimonials-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .service-page-testimonial-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(107, 114, 128, 0.3);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .service-page-testimonial-dot:hover {
+    background: rgba(107, 114, 128, 0.5);
+  }
+  .service-page-testimonial-dot[aria-selected="true"] {
+    background: var(--color-brand-ink, #1a1a2e);
+  }
+  .service-page-testimonial {
+    margin: 0;
+    padding: 1.25rem 1.5rem 1.25rem 2rem;
+    background: #ffffff;
+    border: 1px solid #E9ECF3;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(26, 26, 46, 0.04);
+    position: relative;
+  }
+  .service-page-testimonial::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #F3AD19;
+    border-radius: 1rem 0 0 1rem;
+  }
+  .service-page-testimonial-quote {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.75rem;
+    font-style: italic;
+  }
+  .service-page-testimonial-footer {
+    font-size: 0.875rem;
+    color: var(--color-brand-gray, #6b7280);
+  }
+  .service-page-testimonial-author {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+  }
+  .service-page-testimonial-company {
+    display: block;
+    margin-top: 0.15rem;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('img[data-showcase-img]').forEach((img: HTMLImageElement) => {
+    img.addEventListener('error', () => img.setAttribute('data-failed', ''));
+  });
+  document.querySelectorAll('.service-page-testimonials-carousel-wrap').forEach((wrap) => {
+    const carousel = wrap.querySelector('.service-page-testimonials-carousel') as HTMLElement;
+    const dots = wrap.querySelectorAll('.service-page-testimonial-dot');
+    if (!carousel || !dots.length) return;
+    const cards = carousel.querySelectorAll('[data-ref-index]');
+    const updateDots = (index: number) => {
+      dots.forEach((dot, i) => {
+        dot.setAttribute('aria-selected', String(i === index));
+      });
+    };
+    const scrollToIndex = (index: number) => {
+      const card = cards[index] as HTMLElement;
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        updateDots(index);
+      }
+    };
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => scrollToIndex(i));
+    });
+    let ticking = false;
+    carousel.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollLeft = carousel.scrollLeft;
+        const cardWidth = (cards[0] as HTMLElement).offsetWidth;
+        const gap = 24;
+        const index = Math.round(scrollLeft / (cardWidth + gap));
+        updateDots(Math.min(Math.max(0, index), dots.length - 1));
+        ticking = false;
+      });
+    });
+    updateDots(0);
+  });
+</script>

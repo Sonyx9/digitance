@@ -1,0 +1,164 @@
+---
+/**
+ * Sekce Reference: světlé pozadí s jemným tečkovaným vzorem, tag „Reference“,
+ * nadpis, úvodní text vlevo, carousel referencí – karta s oválnou fotkou, velkým uvozovkou, citátem, jménem a rolí. Dole tečková navigace.
+ */
+import Tag from './Tag.astro';
+import { testimonials } from '../data/references';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  referencesTag: string;
+  referencesHeading: string;
+  referencesIntro: string;
+  locale: Locale;
+}
+
+const { referencesTag, referencesHeading, referencesIntro, locale } = Astro.props;
+---
+
+<section class="references-section px-4 py-16 md:px-6 md:py-24" id="reference" aria-label="Reference">
+  <div class="references-dots-bg absolute inset-0" aria-hidden="true"></div>
+  <div class="mx-auto relative z-10 max-w-5xl">
+    <div class="grid gap-6 lg:grid-cols-[1fr,1fr] lg:gap-12 lg:items-start">
+      <div class="order-1 text-left">
+        <Tag>{referencesTag}</Tag>
+        <h2 class="mt-4 font-display text-display-lg font-bold text-brand-ink">
+          {referencesHeading}
+        </h2>
+      </div>
+      <p class="references-intro text-brand-gray leading-relaxed order-2 lg:text-right lg:flex lg:items-end lg:justify-end max-w-md lg:max-w-none">
+        {referencesIntro}
+      </p>
+    </div>
+
+    <div class="references-carousel-wrap mt-12 relative">
+      <div
+        class="references-carousel flex overflow-x-auto overflow-y-hidden gap-8 snap-x snap-mandatory scroll-smooth pb-2"
+        id="references-carousel"
+        role="list"
+      >
+        {testimonials.map((t, i) => (
+          <article
+            class="references-card flex-shrink-0 flex-grow-0 basis-full snap-center flex gap-6 md:gap-10 items-start bg-white rounded-2xl border border-brand-cloud p-6 md:p-8 shadow-sm"
+            role="listitem"
+            data-ref-index={i}
+          >
+            <div class="references-photo-wrap flex-shrink-0">
+              {t.image ? (
+                <img src={t.image} alt="" class="references-photo w-24 h-24 md:w-28 md:h-28 rounded-full object-cover bg-brand-cloud" width="112" height="112" />
+              ) : (
+                <div class="references-photo w-24 h-24 md:w-28 md:h-28 rounded-full bg-brand-cloud flex items-center justify-center text-brand-gray/40 text-xl font-semibold" aria-hidden="true">
+                  {t.name.split(/\s+/).map((p) => p[0]).join('').slice(0, 2).toUpperCase()}
+                </div>
+              )}
+            </div>
+            <div class="min-w-0 flex-1">
+              <span class="references-quote-mark block text-6xl md:text-7xl font-display font-bold text-brand-ink/10 leading-none -mt-2" aria-hidden="true">"</span>
+              <blockquote class="references-quote text-brand-ink leading-relaxed mt-2">
+                {t.quote[locale]}
+              </blockquote>
+              <footer class="mt-4">
+                <cite class="not-italic font-semibold text-brand-ink">{t.name}</cite>
+                <span class="text-brand-gray text-sm block mt-0.5">{t.role[locale]}</span>
+              </footer>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="references-dots flex justify-center gap-2 mt-8" role="tablist" aria-label="Reference">
+        {testimonials.map((_, i) => (
+          <button
+            type="button"
+            class="references-dot w-2.5 h-2.5 rounded-full border-0 bg-brand-gray/30 transition-colors hover:bg-brand-gray/50 focus:outline-none focus:ring-2 focus:ring-brand-ink/30"
+            aria-label={`Reference ${i + 1}`}
+            aria-selected={i === 0}
+            data-ref-dot={i}
+          ></button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const initReferencesCarousel = () => {
+    const section = document.querySelector('#reference');
+    if (!section) return;
+    if ((section as HTMLElement).dataset.carouselInit === '1') return;
+
+    const carousel = section.querySelector('#references-carousel') as HTMLElement | null;
+    const dots = section.querySelectorAll('[data-ref-dot]');
+    if (!carousel || !dots.length) return;
+
+    const cards = carousel.querySelectorAll('[data-ref-index]');
+    if (!cards.length) return;
+
+    (section as HTMLElement).dataset.carouselInit = '1';
+
+    const updateDots = (index: number) => {
+      dots.forEach((dot, i) => {
+        (dot as HTMLElement).setAttribute('aria-selected', String(i === index));
+        dot.classList.toggle('bg-brand-ink', i === index);
+        dot.classList.toggle('bg-brand-gray/30', i !== index);
+      });
+    };
+
+    const scrollToIndex = (index: number) => {
+      const card = cards[index] as HTMLElement | undefined;
+      if (!card) return;
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      updateDots(index);
+    };
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => scrollToIndex(i));
+    });
+
+    let ticking = false;
+    carousel.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const cardWidth = (cards[0] as HTMLElement).offsetWidth;
+        const gap = 32;
+        const index = Math.round(carousel.scrollLeft / (cardWidth + gap));
+        updateDots(Math.min(Math.max(0, index), dots.length - 1));
+        ticking = false;
+      });
+    });
+
+    updateDots(0);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReferencesCarousel, { once: true });
+  } else {
+    initReferencesCarousel();
+  }
+  document.addEventListener('astro:page-load', initReferencesCarousel);
+</script>
+
+<style>
+.references-section {
+  position: relative;
+  background-color: #ffffff;
+}
+.references-dots-bg {
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+  .references-carousel {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .references-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .references-dot.bg-brand-ink {
+    background-color: #353A61 !important;
+  }
+</style>

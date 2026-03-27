@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'DM Sans', system-ui, sans-serif;
+    --font-display: 'DM Sans', system-ui, sans-serif;
+    --color-bg: theme('colors.brand.white');
+    --color-fg: theme('colors.brand.ink');
+    --color-muted: theme('colors.brand.gray');
+    --color-surface: theme('colors.brand.cloud');
+    --color-accent: theme('colors.brand.black');
+  }
+
+  html {
+    @apply antialiased scroll-smooth;
+  }
+
+  body {
+    @apply bg-[var(--color-bg)] text-[var(--color-fg)] font-sans;
+  }
+
+  /* GPU-friendly: pouze transform a opacity pro animace */
+  .animate-gpu {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Scroll-driven: kontejner pro Intersection Observer reveal */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respektovat prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

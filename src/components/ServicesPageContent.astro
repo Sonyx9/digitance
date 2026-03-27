@@ -1,0 +1,119 @@
+---
+/**
+ * Stránka Služby – stejný header jako O nás (PageHero), pod ním mřížka služeb.
+ */
+import PageHero from './PageHero.astro';
+import Reveal from './Reveal.astro';
+import type { Locale } from '../lib/i18n';
+import type { ServiceSlug } from '../data/services';
+
+interface Props {
+  locale: Locale;
+  heroLabel: string;
+  heroTitle: string;
+  heroSubLeft: string;
+  services: { slug: ServiceSlug }[];
+  serviceTitles: Record<ServiceSlug, Record<Locale, string>>;
+  serviceDescriptions: Record<ServiceSlug, Record<Locale, string>>;
+  getServiceHref: (slug: ServiceSlug) => string;
+}
+
+const { locale, heroLabel, heroTitle, heroSubLeft, services, serviceTitles, serviceDescriptions, getServiceHref } = Astro.props;
+---
+
+<article class="services-page">
+  <PageHero heroLabel={heroLabel} heroTitle={heroTitle} heroSubLeft={heroSubLeft} />
+
+  <section class="services-page-list">
+    <div class="services-page-list-inner">
+      <div class="services-page-grid">
+        {services.map((s) => {
+          const title = serviceTitles[s.slug]?.[locale] ?? s.slug;
+          const desc = serviceDescriptions[s.slug]?.[locale] ?? '';
+          const href = getServiceHref(s.slug);
+          return (
+            <Reveal>
+              <a href={href} class="services-page-card">
+                <div class="services-page-card-icon" aria-hidden="true" />
+                <h2 class="services-page-card-title">{title}</h2>
+                <p class="services-page-card-desc">{desc}</p>
+              </a>
+            </Reveal>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</article>
+
+<style>
+  .services-page {
+    position: relative;
+    min-height: 100vh;
+    color: var(--color-brand-ink, #1a1a2e);
+    background: #ffffff;
+  }
+  .services-page-list {
+    margin-top: 0;
+    padding: 3rem 1.5rem 4rem;
+    border-top: 1px solid rgba(26, 26, 46, 0.12);
+  }
+  @media (min-width: 768px) {
+    .services-page-list {
+      padding: 4rem 2rem 5rem;
+    }
+  }
+  .services-page-list-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+  .services-page-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .services-page-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .services-page-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+  }
+  .services-page-card {
+    display: block;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid #E9ECF3;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .services-page-card:hover {
+    border-color: rgba(53, 58, 97, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+  .services-page-card-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #E9ECF3 0%, #e0e4ed 100%);
+    margin-bottom: 1rem;
+  }
+  .services-page-card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.5rem;
+  }
+  .services-page-card-desc {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--color-brand-gray, #6b7280);
+    margin: 0;
+  }
+</style>

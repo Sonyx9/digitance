@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getPathForLocale, type Locale } from '../../lib/i18n';
+import { services, serviceTitles, serviceDescriptions } from '../../data/services';
+import ServicesPageContent from '../../components/ServicesPageContent.astro';
+
+const locale = Astro.currentLocale as Locale;
+const servicesPath = getPathForLocale(locale, 'services');
+
+const t = {
+  heroLabel: 'Co děláme',
+  heroTitle: 'Služby',
+  heroSubLeft: 'Navrhujeme smysluplné zážitky, ne jen rychlé dojmy.',
+};
+---
+
+<BaseLayout title={`${t.heroTitle} — digitance.`} description={t.heroSubLeft}>
+  <ServicesPageContent
+    locale={locale}
+    heroLabel={t.heroLabel}
+    heroTitle={t.heroTitle}
+    heroSubLeft={t.heroSubLeft}
+    services={services}
+    serviceTitles={serviceTitles}
+    serviceDescriptions={serviceDescriptions}
+    getServiceHref={(slug) => getRelativeLocaleUrl(locale, `${servicesPath}/${slug}`)}
+  />
+</BaseLayout>

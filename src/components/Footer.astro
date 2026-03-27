@@ -1,0 +1,150 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getPathForLocale, type Locale } from '../lib/i18n';
+import Logo from './Logo.astro';
+
+const locale = Astro.currentLocale as Locale;
+const locales: Locale[] = ['cs', 'sk', 'en'];
+const currentYear = new Date().getFullYear();
+
+const footerLabels: Record<Locale, { billing: string; contact: string }> = {
+  cs: { billing: 'Fakturační údaje', contact: 'Kontaktní údaje' },
+  sk: { billing: 'Fakturačné údaje', contact: 'Kontaktné údaje' },
+  en: { billing: 'Billing details', contact: 'Contact details' },
+};
+const labels = footerLabels[locale];
+const billingDetails: Record<Locale, string[]> = {
+  cs: [
+    'Digitance CZ s. r. o.',
+    'IČO:',
+    'Nejsme plátci DPH',
+    'Uralská 689/7,',
+    '160 00 Praha 6',
+  ],
+  sk: [
+    'shazucha s. r. o.',
+    'IČO: 56567111',
+    'DIČ: 2122358106',
+    'IČ DPH: SK2122358106',
+    'podľa §7a',
+  ],
+  en: [
+    'Digitance CZ s. r. o.',
+    'IČO:',
+    'Nejsme plátci DPH',
+    'Uralská 689/7,',
+    '160 00 Praha 6',
+  ],
+};
+---
+
+<footer class="border-t border-brand-cloud bg-[#232742] text-brand-white">
+  <div class="mx-auto max-w-7xl px-4 py-12 md:px-6">
+    <div class="grid gap-8 md:grid-cols-3">
+      <div>
+        <a href={getRelativeLocaleUrl(locale, '')} class="footer-logo text-xl font-semibold">
+          <Logo />
+        </a>
+        <p class="mt-3 text-sm text-brand-silver">
+          Elevate your brand with exceptional design solutions. From branding to UI, we bring your vision to life.
+        </p>
+        <div class="mt-4 flex flex-col items-start gap-3">
+          <a
+            href="https://www.google.com/partners/agency?id=3654930267"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-google-badge inline-block"
+            aria-label="Google Partner"
+          >
+            <img
+              src="https://www.gstatic.com/partners/badge/images/2026/PartnerBadgeClickable.svg"
+              alt="Google Partner"
+              width="252"
+              height="84"
+              class="h-[84px] w-auto"
+            />
+          </a>
+          <a
+            href="https://partneri.shoptet.sk/profesionali/digitance/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-partner-badge inline-block"
+            aria-label="Shoptet Partner – Digitance"
+          >
+            <img
+              src="https://partneri.shoptet.sk/wp-content/uploads/2023/04/shoptet-partner-bronze.png"
+              alt="Shoptet Partner – bronzový partner"
+              width="90"
+              height="40"
+              class="h-10 w-auto"
+            />
+          </a>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-brand-cloud">{labels.contact}</h3>
+        <ul class="mt-4 space-y-3 text-sm text-brand-silver">
+          <li>
+            <span class="block font-medium text-brand-cloud">Pobočka Liptovský Mikuláš</span>
+            Garbiarska 905,<br />
+            031 01 Liptovský Mikuláš
+          </li>
+          <li>
+            <span class="block font-medium text-brand-cloud">Pobočka Praha</span>
+            Uralská 689/7,<br />
+            160 00 Praha 6
+          </li>
+          <li>
+            <span class="block font-medium text-brand-cloud">E-mail</span>
+            <a href="mailto:info@digitance.eu" class="hover:text-brand-white">info@digitance.eu</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-brand-cloud">{labels.billing}</h3>
+        <ul class="mt-4 space-y-1 text-sm text-brand-silver">
+          {billingDetails[locale].map((line) => (
+            <li>{line}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-brand-stone pt-8 text-sm text-brand-silver">
+      <span>
+        <a href="https://lukaskoula.com" class="no-underline text-inherit hover:text-inherit">Lukáš Koula</a>
+        {' '}©{currentYear} <span class="footer-logo"><Logo /></span> All rights reserved.
+      </span>
+      <nav class="flex gap-2" aria-label="Language">
+        {locales.map((loc) => (
+          <a
+            href={loc === 'sk' ? 'https://digitance.eu' : getRelativeLocaleUrl(loc, getPathForLocale(loc, 'home'))}
+            class:list={[
+              'rounded-lg px-3 py-1.5 text-sm transition-colors',
+              loc === locale ? 'bg-brand-stone text-brand-white' : 'text-brand-silver hover:bg-brand-stone hover:text-brand-white',
+            ]}
+          >
+            {loc.toUpperCase()}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-logo :global(.logo-text) {
+    color: #fff;
+  }
+  .footer-google-badge img {
+    transition: opacity 0.2s ease;
+  }
+  .footer-google-badge:hover img {
+    opacity: 0.9;
+  }
+  .footer-partner-badge img {
+    transition: opacity 0.2s ease;
+  }
+  .footer-partner-badge:hover img {
+    opacity: 0.9;
+  }
+</style>

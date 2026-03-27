@@ -1,0 +1,95 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { pathToPageKey, getPathForLocaleWithSlug, type Locale } from '../lib/i18n';
+import Nav from '../components/Nav.astro';
+import CtaBlockSection from '../components/CtaBlockSection.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Přepíše canonical URL (bez base). */
+  canonicalPath?: string;
+  /** Obrázek pro og:image (absolutní nebo relativní k base). */
+  image?: string;
+}
+
+const { title, description = '', canonicalPath, image } = Astro.props;
+const locale = Astro.currentLocale as Locale;
+const base = import.meta.env.BASE_URL;
+const site = Astro.site?.href ?? 'https://digitance.cz';
+const canonical = Astro.url.href;
+
+const pathname = Astro.url.pathname;
+const pathWithoutBase = base ? pathname.replace(new RegExp(`^${base.replace(/\//g, '\\/')}`), '') : pathname;
+const pathSegments = pathWithoutBase.split('/').filter(Boolean);
+const pathAfterLocale = pathSegments.slice(1).join('/');
+const { key: pageKey, slug } = pathToPageKey(pathAfterLocale);
+
+const locales = ['cs', 'sk', 'en'] as const;
+const hreflang = locales.map((loc) => {
+  const path = getPathForLocaleWithSlug(loc, pageKey, slug);
+  const rel = getRelativeLocaleUrl(loc, path);
+  const url = rel.startsWith('http') ? rel : new URL(rel, Astro.url.origin).href;
+  return { locale: loc, url };
+});
+
+const ctaCopy = {
+  cs: {
+    heading: 'Pojďme spolu začít',
+    sub: 'Chcete vidět, co dokáže profesionální marketing? Kontaktujte nás ještě dnes a získejte bezplatnou konzultaci. Společně najdeme způsob, jak z vašeho byznysu udělat lídra na trhu.',
+    button: 'Napište nám',
+  },
+  sk: {
+    heading: 'Poďme spolu začať',
+    sub: 'Chcete vidieť, čo dokáže profesionálny marketing? Kontaktujte nás ešte dnes a získajte bezplatnú konzultáciu. Spoločne nájdeme spôsob, ako z vášho biznisu spraviť lídra na trhu.',
+    button: 'Napíšte nám',
+  },
+  en: {
+    heading: "Let's start together",
+    sub: "Want to see what professional marketing can do? Contact us today and get a free consultation. Together we'll find a way to make your business a market leader.",
+    button: 'Send us a message',
+  },
+}[locale];
+const contactUrl = getRelativeLocaleUrl(locale, getPathForLocaleWithSlug(locale, 'contact'));
+---
+
+<!DOCTYPE html>
+<html lang={locale}>
+  <head>
+    <ViewTransitions />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {hreflang.map(({ locale: loc, url }) => (
+      <link rel="alternate" hreflang={loc} href={url} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={hreflang.find((h) => h.locale === 'cs')?.url ?? canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale} />
+    {image && <meta property="og:image" content={image.startsWith('http') ? image : `${site}${image}`} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+    <base href={base || '/'} />
+  </head>
+  <body>
+    <Nav />
+    <main id="main-content" transition:animate="fade" transition:duration={300}>
+      <slot />
+    </main>
+    <CtaBlockSection
+      ctaBlockHeading={ctaCopy.heading}
+      ctaBlockSub={ctaCopy.sub}
+      ctaBlockButton={ctaCopy.button}
+      contactUrl={contactUrl}
+    />
+    <Footer />
+  </body>
+</html>

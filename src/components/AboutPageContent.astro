@@ -1,0 +1,702 @@
+---
+/**
+ * Stránka O nás – layout podle portfolio vzoru: hlavička, summary pruh, HELLO sekce, mřížka (nástroje, zkušenosti, hodnoty/jazyky).
+ * Pozadí: světlé s kostičkami z hero sekce (HeroGridBg).
+ */
+import Reveal from './Reveal.astro';
+import type { AboutContactPill, AboutExperience, AboutTool, AboutHodnota, AboutLanguage, AboutTeamMember } from '../data/aboutPage';
+
+interface Props {
+  heroTitle: string;
+  heroLabel: string;
+  heroSubLeft: string;
+  heroSubRight: string;
+  summaryName: string;
+  summaryRole: string;
+  summaryIntro: string;
+  summaryCredits: string;
+  misiaTitle: string;
+  misiaText: string;
+  viziaTitle: string;
+  viziaText: string;
+  intro1: string;
+  intro2: string;
+  contactPills: AboutContactPill[];
+  experience: AboutExperience[];
+  tools: AboutTool[];
+  toolsTitle: string;
+  experienceTitle: string;
+  hodnotyTitle: string;
+  hodnotyItems: AboutHodnota[];
+  languagesTitle: string;
+  languages: AboutLanguage[];
+  teamTitle: string;
+  team: AboutTeamMember[];
+  /** Nadpis bloku představení firmy (Mise, Vize, Hodnoty) */
+  introLabel?: string;
+}
+
+const { heroTitle, heroLabel, heroSubLeft, heroSubRight, summaryName, summaryRole, summaryIntro, summaryCredits, misiaTitle, misiaText, viziaTitle, viziaText, intro1, intro2, contactPills, experience, tools, toolsTitle, experienceTitle, hodnotyTitle, hodnotyItems, languagesTitle, languages, teamTitle, team, introLabel = 'Představení' } = Astro.props;
+---
+
+<article class="about-resume">
+  <!-- 1. Hlavička: Updated, O NÁS, rok v oranžové, čára, subtexty (mřížka jen zde) -->
+  <header class="about-resume-hero">
+    <div class="about-resume-hero-grid" aria-hidden="true"></div>
+    <div class="about-resume-hero-inner">
+      <Reveal>
+        <p class="about-resume-hero-label">{heroLabel}</p>
+        <div class="about-resume-hero-title-row">
+          <h1 class="about-resume-hero-title">{heroTitle}</h1>
+          <span class="about-resume-hero-dot" aria-hidden="true"></span>
+        </div>
+        <div class="about-resume-hero-sub">
+          <span class="about-resume-hero-sub-left">{heroSubLeft}</span>
+        </div>
+      </Reveal>
+    </div>
+  </header>
+
+  <!-- 2. Úvodní odstavec: Představení + text -->
+  <section class="about-resume-summary">
+    <div class="about-resume-summary-inner">
+      <div class="about-resume-summary-left">
+        <h2 class="about-resume-summary-heading">{introLabel}</h2>
+        <p class="about-resume-summary-intro">{summaryIntro}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2b. Představení členů týmu (nad Mise/Vize/Hodnoty) -->
+  <section class="about-resume-team">
+    <div class="about-resume-team-inner">
+      <div class="about-resume-team-grid">
+        {team.slice(0, 2).map((member) => (
+          <article class="about-resume-team-card">
+            <div class="about-resume-team-photo" aria-hidden="true">
+              <img
+                src={member.photo ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=F3AD19&color=111827&size=256&bold=true&rounded=true`}
+                alt={member.photoAlt ?? `Na obrázku je ${member.name}`}
+                loading="lazy"
+                decoding="async"
+                class="about-resume-team-photo-image"
+              />
+            </div>
+            <div class="about-resume-team-content">
+              <h3 class="about-resume-team-name">{member.name}</h3>
+              <p class="about-resume-team-role">{member.role}</p>
+              <p class="about-resume-team-description">{member.description}</p>
+              <div class="about-resume-team-links">
+                {member.website && (
+                  <a href={member.website} target="_blank" rel="noopener noreferrer" class="about-resume-team-link about-resume-team-link--website" aria-label={`${member.name} – web`}>
+                    <svg class="about-resume-team-link-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                    </svg>
+                  </a>
+                )}
+                {member.linkedin && (
+                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer" class="about-resume-team-link about-resume-team-link--linkedin" aria-label={`${member.name} – LinkedIn`}>
+                    <svg class="about-resume-team-link-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M6.94 8.5v8.56H4.09V8.5h2.85zM5.51 4.25c.91 0 1.63.74 1.63 1.65s-.72 1.65-1.63 1.65-1.63-.74-1.63-1.65.72-1.65 1.63-1.65zm13.9 7.9v4.91h-2.84V12.5c0-1.09-.39-1.83-1.36-1.83-.74 0-1.18.5-1.37.98-.07.17-.09.41-.09.65v4.76h-2.85s.04-7.72 0-8.56h2.85v1.21c.38-.58 1.06-1.41 2.57-1.41 1.88 0 3.09 1.23 3.09 3.85z"/>
+                    </svg>
+                  </a>
+                )}
+                {member.email && (
+                  <a href={`mailto:${member.email}`} class="about-resume-team-link about-resume-team-link--email" aria-label={`${member.name} – E-mail`}>
+                    <svg class="about-resume-team-link-icon" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Představení firmy: Mise, Vize, Hodnoty -->
+  <section class="about-resume-intro">
+    <div class="about-resume-intro-box">
+      <div class="about-resume-intro-grid">
+        <div class="about-resume-intro-block">
+          <h3 class="about-resume-intro-title">{misiaTitle}</h3>
+          <p class="about-resume-intro-text">{misiaText}</p>
+        </div>
+        <div class="about-resume-intro-block">
+          <h3 class="about-resume-intro-title">{viziaTitle}</h3>
+          <p class="about-resume-intro-text">{viziaText}</p>
+        </div>
+        <div class="about-resume-intro-block">
+          <h3 class="about-resume-intro-title">{hodnotyTitle}</h3>
+          <ul class="about-resume-intro-list">
+            {hodnotyItems.map((item) => (
+              <li>
+                <span class="about-resume-intro-value-title">{item.title}</span>
+                <span class="about-resume-intro-value-text"> – {item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<style>
+  .about-resume {
+    position: relative;
+    min-height: 100vh;
+    color: var(--color-brand-ink, #1a1a2e);
+  }
+  .about-resume {
+    background: #ffffff;
+  }
+  .about-resume-hero,
+  .about-resume-summary,
+  .about-resume-team {
+    position: relative;
+    z-index: 1;
+  }
+  .about-resume-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 28rem;
+    padding: 4rem 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-hero {
+      min-height: 32rem;
+      padding: 6rem 2rem;
+    }
+  }
+  /* Mřížka jen v první sekci, stejně do ztracena nahoře i dole, nápis O NÁS uprostřed viditelné mřížky */
+  .about-resume-hero-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-color: #ffffff;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 100% 90% at 50% 50%, black 25%, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 90% at 50% 50%, black 25%, transparent 72%);
+  }
+  .about-resume-hero-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 72rem;
+    margin: 0 auto;
+    text-align: left;
+    align-self: stretch;
+  }
+  .about-resume-hero-label {
+    font-size: 0.8rem;
+    color: var(--color-brand-gray, #6b7280);
+    margin: 0 0 0.25rem;
+  }
+  .about-resume-hero-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem 1.25rem;
+  }
+  .about-resume-hero-title {
+    font-size: clamp(2.5rem, 10vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0;
+  }
+  .about-resume-hero-dot {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: #F3AD19;
+    vertical-align: 0.25em;
+    margin-left: 0.2rem;
+  }
+  .about-resume-hero-sub {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+    color: var(--color-brand-gray, #6b7280);
+  }
+
+  .about-resume-summary {
+    margin-top: 100px;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid rgba(26, 26, 46, 0.2);
+  }
+  @media (min-width: 768px) {
+    .about-resume-summary {
+      padding: 2.5rem 3rem;
+    }
+  }
+  .about-resume-summary-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-summary-inner {
+      grid-template-columns: 1fr auto;
+      align-items: start;
+    }
+  }
+  .about-resume-summary-heading {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #F3AD19;
+    margin: 0 0 0.75rem;
+    letter-spacing: 0.02em;
+  }
+  .about-resume-summary-intro {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0;
+    max-width: 72rem;
+    white-space: pre-line;
+    text-align: justify;
+  }
+  .about-resume-summary-credits {
+    font-size: 0.75rem;
+    color: var(--color-brand-gray, #9ca3af);
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  /* Jeden box – představení firmy (Mise, Vize, Hodnoty) */
+  .about-resume-intro {
+    margin-top: 1.25rem;
+    padding: 2rem 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-intro {
+      padding: 2.5rem 2rem;
+    }
+  }
+  .about-resume-intro-box {
+    max-width: 72rem;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #E9ECF3;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 2rem 1.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-resume-intro-box::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #F3AD19;
+    border-radius: 1rem 0 0 1rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-intro-box {
+      padding: 2.5rem 3rem 2.5rem 2.75rem;
+    }
+  }
+  .about-resume-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-intro-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2.5rem 3rem;
+    }
+  }
+  .about-resume-intro-block {
+    min-width: 0;
+  }
+  .about-resume-intro-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.75rem;
+  }
+  .about-resume-intro-text {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-brand-gray, #4b5563);
+    margin: 0;
+  }
+  .about-resume-intro-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-brand-gray, #4b5563);
+  }
+  .about-resume-intro-list li {
+    margin-bottom: 1rem;
+  }
+  .about-resume-intro-list li:last-child {
+    margin-bottom: 0;
+  }
+  .about-resume-intro-value-title {
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+  }
+  .about-resume-intro-value-text {
+    color: var(--color-brand-gray, #4b5563);
+  }
+
+  .about-resume-team {
+    margin-top: 1.25rem;
+    padding: 2rem 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-team {
+      padding: 2.5rem 2rem;
+    }
+  }
+  .about-resume-team-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+  .about-resume-team-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 960px) {
+    .about-resume-team-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+  .about-resume-team-card {
+    border: 1px solid rgba(233, 236, 243, 0.9);
+    background:
+      radial-gradient(circle at 8% 12%, rgba(243, 173, 25, 0.12), transparent 36%),
+      #ffffff;
+    border-radius: 1.25rem;
+    padding: 1.1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: stretch;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+  }
+  .about-resume-team-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+  }
+  @media (min-width: 768px) {
+    .about-resume-team-card {
+      grid-template-columns: 190px 1fr;
+      gap: 1.4rem;
+      padding: 1.35rem;
+    }
+  }
+  @media (min-width: 640px) and (max-width: 767px) {
+    .about-resume-team-card {
+      grid-template-columns: 150px 1fr;
+    }
+  }
+  .about-resume-team-photo {
+    height: 100%;
+    min-height: 240px;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(243, 173, 25, 0.3);
+    background:
+      radial-gradient(circle at 30% 25%, rgba(243, 173, 25, 0.28), transparent 58%),
+      linear-gradient(145deg, #f8fafc 0%, #eef2f7 100%);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .about-resume-team-photo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .about-resume-team-name {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-brand-ink, #1a1a2e);
+  }
+  .about-resume-team-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    min-width: 0;
+  }
+  .about-resume-team-role {
+    margin: 0.4rem 0 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #F3AD19;
+  }
+  .about-resume-team-description {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-brand-gray, #4b5563);
+    text-align: justify;
+  }
+  .about-resume-team-links {
+    margin-top: auto;
+    padding-top: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .about-resume-team-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    color: #353A61;
+    text-decoration: none;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+  .about-resume-team-link:hover {
+    color: #1a1a2e;
+    background-color: rgba(53, 58, 97, 0.08);
+  }
+  .about-resume-team-link-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+    flex: 0 0 auto;
+  }
+  .about-resume-team-link--linkedin,
+  .about-resume-team-link--website,
+  .about-resume-team-link--email {
+    color: #353A61;
+  }
+  .about-resume-team-link--linkedin:hover,
+  .about-resume-team-link--website:hover,
+  .about-resume-team-link--email:hover {
+    color: #1a1a2e;
+    background-color: rgba(53, 58, 97, 0.08);
+  }
+  .about-resume-team-link:hover {
+    text-decoration: underline;
+  }
+  .about-resume-hello {
+    margin-top: 100px;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid rgba(26, 26, 46, 0.2);
+  }
+  @media (min-width: 768px) {
+    .about-resume-hello {
+      padding: 2.5rem 2rem;
+    }
+  }
+  .about-resume-hello-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-hello-inner {
+      grid-template-columns: auto 1fr;
+      align-items: start;
+      gap: 2rem;
+    }
+  }
+  .about-resume-hello-photo-box {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 0.5rem;
+    border: 2px solid rgba(26, 26, 46, 0.2);
+    background: rgba(233, 236, 243, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .about-resume-hello-initials {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-brand-ink, #1a1a2e);
+    letter-spacing: 0.05em;
+  }
+  .about-resume-hello-heading {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.75rem;
+  }
+  .about-resume-hello-mark {
+    color: #F3AD19;
+  }
+  .about-resume-hello-text {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.5rem;
+    max-width: 40rem;
+  }
+  .about-resume-hello-text--muted {
+    color: var(--color-brand-gray, #6b7280);
+  }
+  .about-resume-hello-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .about-resume-pill {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    background: #F3AD19;
+    color: #111827;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .about-resume-pill:hover {
+    filter: brightness(1.08);
+  }
+
+  .about-resume-grid-section {
+    margin-top: 100px;
+    padding: 2rem 1.5rem 3rem;
+    border-top: 1px solid rgba(26, 26, 46, 0.2);
+  }
+  @media (min-width: 768px) {
+    .about-resume-grid-section {
+      padding: 2.5rem 2rem 4rem;
+    }
+  }
+  .about-resume-grid-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .about-resume-grid-inner {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+  }
+  .about-resume-col-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-brand-ink, #1a1a2e);
+    margin: 0 0 0.75rem;
+  }
+  .about-resume-col-title--mt {
+    margin-top: 1.5rem;
+  }
+  .about-resume-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .about-resume-tool-card {
+    border: 1px solid rgba(26, 26, 46, 0.15);
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  .about-resume-tool-abbr {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #F3AD19;
+    margin-right: 0.35rem;
+  }
+  .about-resume-tool-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+  }
+  .about-resume-tool-desc {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-brand-gray, #6b7280);
+    margin-top: 0.15rem;
+  }
+  .about-resume-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .about-resume-timeline-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0 0.5rem;
+    align-items: baseline;
+  }
+  .about-resume-timeline-dot {
+    grid-row: 1 / -1;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #F3AD19;
+    margin-top: 0.4rem;
+  }
+  .about-resume-timeline-period {
+    font-size: 0.8rem;
+    color: var(--color-brand-gray, #6b7280);
+  }
+  .about-resume-timeline-role {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-brand-ink, #1a1a2e);
+  }
+  .about-resume-timeline-company {
+    font-size: 0.8rem;
+    color: var(--color-brand-gray, #6b7280);
+  }
+  .about-resume-values,
+  .about-resume-langs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-brand-ink, #1a1a2e);
+    line-height: 1.5;
+  }
+  .about-resume-values li {
+    margin-bottom: 0.35rem;
+  }
+  .about-resume-value-label {
+    color: #F3AD19;
+    font-weight: 600;
+  }
+  .about-resume-langs li {
+    margin-bottom: 0.2rem;
+    color: var(--color-brand-gray, #6b7280);
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { navLabels, getPathForLocale, pathToPageKey, getPathForLocaleWithSlug, type Locale } from '../lib/i18n';
+import { services, serviceTitles } from '../data/services';
+import type { ServiceSlug } from '../data/services';
+import Logo from './Logo.astro';
+
+const locale = Astro.currentLocale as Locale;
+const pathname = Astro.url.pathname;
+const base = import.meta.env.BASE_URL || '/';
+const pathWithoutBase = pathname.replace(new RegExp(`^${base.replace(/\//g, '\\/')}`), '') || pathname;
+const pathAfterLocale = pathWithoutBase.split('/').filter(Boolean).slice(1).join('/');
+const { key: pageKey, slug } = pathToPageKey(pathAfterLocale);
+
+const servicesPath = getPathForLocale(locale, 'services');
+const serviceLinks: { slug: ServiceSlug; label: string; href: string }[] = services.map((s) => ({
+  slug: s.slug,
+  label: serviceTitles[s.slug]?.[locale] ?? s.slug,
+  href: getRelativeLocaleUrl(locale, `${servicesPath}/${s.slug}`),
+}));
+
+const navItems: { key: 'about' | 'services' | 'portfolio' | 'reference'; path: string; hash?: string }[] = [
+  { key: 'about', path: getPathForLocale(locale, 'about') },
+  { key: 'services', path: getPathForLocale(locale, 'services') },
+  { key: 'portfolio', path: getPathForLocale(locale, 'portfolio') },
+  { key: 'reference', path: getPathForLocale(locale, 'reference') },
+];
+
+function isActive(path: string, key: string): boolean {
+  const normalized = pathname.replace(base, '').replace(/\/$/, '') || '/';
+  const segs = normalized.split('/').filter(Boolean);
+  const rest = segs.slice(1).join('/');
+  if (key === 'about') return rest === path || rest.startsWith(path + '/');
+  if (key === 'services') return rest === path || rest.startsWith(path + '/');
+  if (key === 'portfolio') return rest === path || rest.startsWith(path + '/');
+  if (key === 'reference') return rest === path || rest.startsWith(path + '/');
+  return false;
+}
+
+const locales: Locale[] = ['cs', 'sk', 'en'];
+---
+
+<header class="sticky top-0 z-50 border-b border-brand-cloud bg-brand-white/95 backdrop-blur supports-[backdrop-filter]:bg-brand-white/80">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-6" aria-label="Hlavní navigace">
+    <a href={getRelativeLocaleUrl(locale, '')} class="text-xl font-semibold text-brand-ink">
+      <Logo />
+    </a>
+    <ul class="hidden items-center gap-8 md:flex">
+      {navItems.map(({ key, path, hash }) => {
+        const active = isActive(path, key);
+        const href = hash ? getRelativeLocaleUrl(locale, path) + hash : getRelativeLocaleUrl(locale, path);
+        const isServices = key === 'services';
+        return (
+          <li class:list={[isServices && 'nav-services-wrap group relative']}>
+            {isServices ? (
+              <>
+                <a
+                  href={href}
+                  class:list={[
+                    'inline-flex items-center gap-1 text-sm font-medium transition-colors',
+                    active ? 'text-brand-ink' : 'text-brand-gray hover:text-brand-ink',
+                  ]}
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  id="nav-services-trigger"
+                >
+                  {navLabels[locale][key]}
+                  <svg class="nav-services-chevron h-4 w-4 opacity-70 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </a>
+                <div class="nav-services-dropdown absolute left-0 top-full pt-2 opacity-0 invisible transition-all duration-200 group-hover:opacity-100 group-hover:visible" role="menu" aria-labelledby="nav-services-trigger">
+                  <ul class="min-w-[220px] rounded-xl border border-brand-cloud bg-white py-2 shadow-lg" role="none">
+                    {serviceLinks.map(({ slug, label, href: serviceHref }) => (
+                      <li role="none">
+                        <a href={serviceHref} class="block px-4 py-2 text-sm text-brand-gray hover:bg-brand-cloud hover:text-brand-ink" role="menuitem">{label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <a
+                href={href}
+                class:list={[
+                  'text-sm font-medium transition-colors',
+                  active ? 'text-brand-ink' : 'text-brand-gray hover:text-brand-ink',
+                ]}
+              >
+                {navLabels[locale][key]}
+              </a>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+    <div class="flex items-center gap-3">
+      <ul class="flex items-center gap-1" role="list" aria-label="Výběr jazyka">
+        {locales.map((loc) => {
+          const path = getPathForLocaleWithSlug(loc, pageKey, slug);
+          const href = loc === 'sk' ? 'https://digitance.eu' : getRelativeLocaleUrl(loc, path);
+          const isCurrent = loc === locale;
+          return (
+            <li>
+              <a
+                href={href}
+                hreflang={loc}
+                aria-current={isCurrent ? 'true' : undefined}
+                class:list={[
+                  'rounded-lg px-2 py-1.5 text-sm font-medium transition-colors',
+                  isCurrent ? 'bg-brand-cloud text-brand-ink' : 'text-brand-gray hover:bg-brand-cloud hover:text-brand-ink',
+                ]}
+              >
+                {loc.toUpperCase()}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+      <a
+        href={getRelativeLocaleUrl(locale, getPathForLocale(locale, 'contact'))}
+        class="nav-contact-btn rounded-2xl bg-[#F3AD19] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#e09e14]"
+      >
+        {navLabels[locale].contact}
+      </a>
+    </div>
+  </nav>
+  <!-- Mobilní menu: jednoduchý dropdown nebo hamburger lze doplnit -->
+</header>
