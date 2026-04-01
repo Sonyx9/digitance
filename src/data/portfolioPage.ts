@@ -41,15 +41,48 @@ export interface PortfolioItem {
   url: string;
   /** Cesta k screenshotu (v public/) nebo URL obrázku */
   screenshot: string;
+  /** Volitelné logo projektu */
+  logo?: string;
 }
 
 export const portfolioItems: PortfolioItem[] = [
-  { title: 'mircinamydla.cz', url: 'https://mircinamydla.cz', screenshot: '/images/portfolio/mircinamydla.jpg' },
-  { title: 'sleepsheep.cz', url: 'https://sleepsheep.cz', screenshot: '/images/portfolio/sleepsheep.jpg' },
-  { title: 'joy-sperky.cz', url: 'https://joy-sperky.cz', screenshot: '/images/portfolio/joy-sperky.jpg' },
-  { title: 'pantheraleo.cz', url: 'https://pantheraleo.cz', screenshot: '/images/portfolio/pantheraleo.jpg' },
-  { title: 'primadora.cz', url: 'https://primadora.cz', screenshot: '/images/portfolio/primadora.jpg' },
+  {
+    title: 'mircinamydla.cz',
+    url: 'https://mircinamydla.cz',
+    screenshot: 'https://lukaskoula.com/wp-content/uploads/2025/05/Mircina-mydla.webp',
+    logo: 'https://cdn.myshoptet.com/usr/www.mircinamydla.cz/user/logos/velke_logo-1.png',
+  },
+  {
+    title: 'sleepsheep.cz',
+    url: 'https://sleepsheep.cz',
+    screenshot: 'https://lukaskoula.com/wp-content/uploads/2025/05/sleep-sheep-eshop.webp',
+    logo: 'https://cdn.myshoptet.com/usr/www.sleepsheep.cz/user/logos/logo.svg',
+  },
+  {
+    title: 'applejoy.cz',
+    url: 'https://applejoy.cz',
+    screenshot: 'https://lukaskoula.com/wp-content/uploads/2026/02/Applejoy-eshop.webp',
+    logo: 'https://cdn.myshoptet.com/usr/www.applejoy.cz/user/logos/logo-1.svg',
+  },
+  {
+    title: 'pantheraleo.cz',
+    url: 'https://pantheraleo.cz',
+    screenshot: 'https://lukaskoula.com/wp-content/uploads/2024/04/panthera-scaled-3.jpg',
+    logo: 'https://cdn.myshoptet.com/usr/www.pantheraleo.cz/user/logos/panthera_logo-h-white-vetsi_text.png',
+  },
+  {
+    title: 'primadora.cz',
+    url: 'https://primadora.cz',
+    screenshot: 'https://lukaskoula.com/wp-content/uploads/2025/05/primadora.webp',
+    logo: 'https://cdn.myshoptet.com/usr/www.primadora.cz/user/logos/shop-logo-primadora_white.png',
+  },
   { title: 'venusamoda.sk', url: 'https://venusamoda.sk', screenshot: '/images/portfolio/venusamoda.jpg' },
   { title: 'eatgreen.eco', url: 'https://eatgreen.eco', screenshot: '/images/portfolio/eatgreen.jpg' },
   { title: 'cisimefasady.sk', url: 'https://cisimefasady.sk', screenshot: '/images/portfolio/cisimefasady.jpg' },
+  {
+    title: 'kurovky.cz',
+    url: 'https://kurovky.cz',
+    screenshot: 'https://lukaskoula.com/wp-content/uploads/2025/07/screencapture-kurovky-cz-2025-07-15-15_09_53.webp',
+    logo: 'https://cdn.myshoptet.com/usr/www.kurovky.cz/user/documents/upload/LOGO/logo_logo.svg',
+  },
 ];

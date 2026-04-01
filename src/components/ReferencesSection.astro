@@ -40,22 +40,19 @@ const { referencesTag, referencesHeading, referencesIntro, locale } = Astro.prop
       >
         {testimonials.map((t, i) => (
           <article
-            class="references-card flex-shrink-0 flex-grow-0 basis-full snap-center flex gap-6 md:gap-10 items-start bg-white rounded-2xl border border-brand-cloud p-6 md:p-8 shadow-sm"
+            class="references-card flex-shrink-0 flex-grow-0 basis-full snap-center flex gap-5 md:gap-7 items-start bg-white rounded-2xl border border-brand-cloud p-5 md:p-7 shadow-sm"
             role="listitem"
             data-ref-index={i}
           >
             <div class="references-photo-wrap flex-shrink-0">
-              {t.image ? (
-                <img src={t.image} alt="" class="references-photo w-24 h-24 md:w-28 md:h-28 rounded-full object-cover bg-brand-cloud" width="112" height="112" />
-              ) : (
-                <div class="references-photo w-24 h-24 md:w-28 md:h-28 rounded-full bg-brand-cloud flex items-center justify-center text-brand-gray/40 text-xl font-semibold" aria-hidden="true">
-                  {t.name.split(/\s+/).map((p) => p[0]).join('').slice(0, 2).toUpperCase()}
-                </div>
-              )}
+              <img src={t.image} alt="" class="references-photo w-32 h-20 md:w-40 md:h-24 rounded-lg object-contain bg-brand-cloud p-2" width="160" height="96" />
+              <div class="references-photo-fallback w-32 h-20 md:w-40 md:h-24 rounded-lg bg-brand-cloud flex items-center justify-center text-brand-gray/40 text-xl font-semibold" aria-hidden="true">
+                {t.name.split(/\s+/).map((p) => p[0]).join('').slice(0, 2).toUpperCase()}
+              </div>
             </div>
-            <div class="min-w-0 flex-1">
-              <span class="references-quote-mark block text-6xl md:text-7xl font-display font-bold text-brand-ink/10 leading-none -mt-2" aria-hidden="true">"</span>
-              <blockquote class="references-quote text-brand-ink leading-relaxed mt-2">
+            <div class="references-content min-w-0 flex-1">
+              <span class="references-quote-mark block text-5xl md:text-6xl font-display font-bold text-brand-ink/10 leading-none" aria-hidden="true">"</span>
+              <blockquote class="references-quote text-brand-ink leading-relaxed mt-1">
                 {t.quote[locale]}
               </blockquote>
               <footer class="mt-4">
@@ -91,6 +88,10 @@ const { referencesTag, referencesHeading, referencesIntro, locale } = Astro.prop
     const carousel = section.querySelector('#references-carousel') as HTMLElement | null;
     const dots = section.querySelectorAll('[data-ref-dot]');
     if (!carousel || !dots.length) return;
+
+    section.querySelectorAll('.references-photo').forEach((img) => {
+      img.addEventListener('error', () => img.setAttribute('data-failed', ''));
+    });
 
     const cards = carousel.querySelectorAll('[data-ref-index]');
     if (!cards.length) return;
@@ -150,6 +151,38 @@ const { referencesTag, referencesHeading, referencesIntro, locale } = Astro.prop
   background-size: 20px 20px;
   pointer-events: none;
 }
+  .references-photo-wrap {
+    position: relative;
+  }
+  .references-photo-fallback {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+  .references-photo[data-failed] {
+    opacity: 0;
+  }
+  .references-photo[data-failed] + .references-photo-fallback {
+    opacity: 1;
+  }
+  .references-card {
+    width: min(100%, 900px);
+    margin: 0 auto;
+    background: linear-gradient(180deg, #ffffff 0%, #fcfcfd 100%);
+  }
+  .references-content {
+    padding-top: 0.1rem;
+  }
+  .references-photo-wrap {
+    border-radius: 0.7rem;
+  }
+  .references-photo {
+    background: transparent;
+    padding: 0;
+  }
+  .references-photo-fallback {
+    background: #eef2f8;
+  }
   .references-carousel {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;

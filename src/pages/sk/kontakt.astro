@@ -110,9 +110,46 @@ const t = {
       <div class="mx-auto max-w-5xl">
         <Reveal>
           <p class="mx-auto mb-8 max-w-3xl text-center text-brand-gray">{t.sub}</p>
-              <p class="mx-auto mb-8 max-w-3xl text-center text-brand-ink">
-                Napíšte nám: <a href="mailto:info@digitance.cz" class="font-medium hover:text-[#353A61]">info@digitance.cz</a>
-              </p>
+          <div class="mb-8 text-center">
+            <a
+              href="mailto:info@digitance.cz"
+              class="inline-flex items-center gap-2 rounded-2xl bg-[#353A61] px-7 py-3 font-medium text-white transition-colors hover:bg-[#2d3153] hover:text-white"
+            >
+              {t.cta}
+            </a>
+          </div>
+          <div class="contact-partners mb-8">
+            <a
+              href="https://www.google.com/partners/agency?id=3654930267"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="partner-badge"
+              aria-label="Google Partner"
+            >
+              <img
+                src="https://www.gstatic.com/partners/badge/images/2026/PartnerBadgeClickable.svg"
+                alt="Google Partner"
+                width="252"
+                height="84"
+                class="h-[84px] w-auto"
+              />
+            </a>
+            <a
+              href="https://partneri.shoptet.sk/profesionali/digitance/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="partner-badge"
+              aria-label="Shoptet Partner"
+            >
+              <img
+                src="https://partneri.shoptet.sk/wp-content/uploads/2023/04/shoptet-partner-bronze.png"
+                alt="Shoptet Partner"
+                width="90"
+                height="40"
+                class="h-10 w-auto"
+              />
+            </a>
+          </div>
           <div class="grid gap-6 md:grid-cols-2">
             <article class="contact-card rounded-2xl border border-brand-cloud bg-white p-6 shadow-sm">
               <h2 class="text-xl font-semibold text-brand-ink">{t.czRegion}</h2>
@@ -149,19 +186,34 @@ const t = {
               </ul>
             </article>
           </div>
-          <article class="billing-card mt-8 rounded-2xl border border-brand-cloud p-6 md:p-8">
-            <div class="billing-heading">
-              <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 15h3"/><path d="M14 15h2"/></svg>
-              <h2 class="text-xl font-semibold text-brand-ink">Fakturačné údaje</h2>
-            </div>
-            <div class="mt-4 space-y-1 text-brand-gray">
-              <p class="font-medium text-brand-ink">Digitance CZ s. r. o.</p>
-              <p>IČO:</p>
-              <p>Nie sme platcami DPH</p>
-              <p>Uralská 689/7,</p>
-              <p>160 00 Praha 6</p>
-            </div>
-          </article>
+          <div class="mt-8 grid gap-6 md:grid-cols-2">
+            <article class="billing-card rounded-2xl border border-brand-cloud p-6 md:p-8">
+              <div class="billing-heading">
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 15h3"/><path d="M14 15h2"/></svg>
+                <h2 class="text-xl font-semibold text-brand-ink">Fakturačné údaje</h2>
+              </div>
+              <div class="mt-4 space-y-1 text-brand-gray">
+                <p class="font-medium text-brand-ink">Digitance CZ s. r. o.</p>
+                <p>IČO: 248 92 581</p>
+                <p>Datová schránka: e6xac7t</p>
+                <p>Nie sme platcami DPH</p>
+                <p>Uralská 689/7,</p>
+                <p>160 00 Praha 6</p>
+              </div>
+            </article>
+            <article class="bank-card rounded-2xl border border-brand-cloud p-6 md:p-8">
+              <div class="billing-heading">
+                <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h3"/><path d="M13 15h4"/><path d="M3 10h18"/></svg>
+                <h2 class="text-xl font-semibold text-brand-ink">Bankové spojenie</h2>
+              </div>
+              <div class="mt-4 space-y-1 text-brand-gray">
+                <p>Bankový účet: 3622203017</p>
+                <p>Air Bank: 3030</p>
+                <p>IBAN: CZ96 3030 0000 0000 3622 2030 17</p>
+                <p>Swift: AIRACZPP</p>
+              </div>
+            </article>
+          </div>
           <section class="faq-card mt-8 rounded-2xl border border-brand-cloud p-6 md:p-8">
             <h2 class="text-xl font-semibold text-brand-ink">{t.faqTitle}</h2>
             <div class="mt-4 space-y-3">
@@ -215,6 +267,12 @@ const t = {
       linear-gradient(180deg, rgba(53, 58, 97, 0.03), rgba(53, 58, 97, 0));
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
   }
+  .bank-card {
+    background:
+      radial-gradient(circle at top left, rgba(53, 58, 97, 0.08), transparent 45%),
+      linear-gradient(180deg, rgba(243, 173, 25, 0.08), rgba(243, 173, 25, 0));
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+  }
   .billing-heading {
     display: flex;
     align-items: center;
@@ -239,5 +297,18 @@ const t = {
   }
   .faq-item[open] .faq-plus {
     transform: rotate(45deg);
+  }
+  .contact-partners {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .partner-badge img {
+    transition: opacity 0.2s ease;
+  }
+  .partner-badge:hover img {
+    opacity: 0.9;
   }
 </style>

@@ -19,6 +19,17 @@ interface Props {
 }
 
 const { locale, heroLabel, heroTitle, heroSubLeft, services, serviceTitles, serviceDescriptions, getServiceHref } = Astro.props;
+const iconProps = {
+  width: 24,
+  height: 24,
+  viewBox: '0 0 24 24',
+  fill: 'none' as const,
+  xmlns: 'http://www.w3.org/2000/svg',
+  stroke: 'currentColor',
+  'stroke-width': 1.8,
+  'stroke-linecap': 'round' as const,
+  'stroke-linejoin': 'round' as const,
+};
 ---
 
 <article class="services-page">
@@ -32,9 +43,28 @@ const { locale, heroLabel, heroTitle, heroSubLeft, services, serviceTitles, serv
           const desc = serviceDescriptions[s.slug]?.[locale] ?? '';
           const href = getServiceHref(s.slug);
           return (
-            <Reveal>
+            <Reveal class="h-full">
               <a href={href} class="services-page-card">
-                <div class="services-page-card-icon" aria-hidden="true" />
+                <div class="services-page-card-icon" aria-hidden="true">
+                  {s.slug === 'ppc-kampane' && (
+                    <svg {...iconProps}><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v2"/><path d="M12 19v2"/><path d="M3 12h2"/><path d="M19 12h2"/></svg>
+                  )}
+                  {s.slug === 'seo-sluzby' && (
+                    <svg {...iconProps}><path d="M3 17l6-6 4 4 8-8"/><path d="M21 9v6h-6"/></svg>
+                  )}
+                  {s.slug === 'tvorba-e-shopov' && (
+                    <svg {...iconProps}><path d="M4 8h16l-1 12H5L4 8z"/><path d="M8 8V5a2 2 0 012-2h4a2 2 0 012 2v3"/></svg>
+                  )}
+                  {s.slug === 'tvorba-webov' && (
+                    <svg {...iconProps}><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 014 9 14 14 0 01-4 9 14 14 0 01-4-9 14 14 0 014-9z"/></svg>
+                  )}
+                  {s.slug === 'newslettery' && (
+                    <svg {...iconProps}><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M21 7L12 13 3 7"/></svg>
+                  )}
+                  {s.slug === 'audit-kampane' && (
+                    <svg {...iconProps}><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+                  )}
+                </div>
                 <h2 class="services-page-card-title">{title}</h2>
                 <p class="services-page-card-desc">{desc}</p>
               </a>
@@ -84,7 +114,9 @@ const { locale, heroLabel, heroTitle, heroSubLeft, services, serviceTitles, serv
     }
   }
   .services-page-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     padding: 1.5rem;
     border-radius: 1rem;
     border: 1px solid #E9ECF3;
@@ -101,8 +133,11 @@ const { locale, heroLabel, heroTitle, heroSubLeft, services, serviceTitles, serv
     width: 3rem;
     height: 3rem;
     border-radius: 0.75rem;
-    background: linear-gradient(135deg, #E9ECF3 0%, #e0e4ed 100%);
+    background: linear-gradient(135deg, #eef2f8 0%, #e5eaf4 100%);
     margin-bottom: 1rem;
+    display: grid;
+    place-items: center;
+    color: #353A61;
   }
   .services-page-card-title {
     font-size: 1.125rem;
@@ -115,5 +150,9 @@ const { locale, heroLabel, heroTitle, heroSubLeft, services, serviceTitles, serv
     line-height: 1.55;
     color: var(--color-brand-gray, #6b7280);
     margin: 0;
+    flex: 1;
+  }
+  .services-page-grid :global(.reveal-on-scroll) {
+    height: 100%;
   }
 </style>

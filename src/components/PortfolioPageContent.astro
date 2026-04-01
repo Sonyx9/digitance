@@ -27,6 +27,10 @@ const t = portfolioPageContent[locale];
       <div class="portfolio-page-grid" role="list">
         {portfolioItems.map((item) => (
           <article class="portfolio-page-card" role="listitem">
+            {(() => {
+              const domain = item.url.replace(/^https?:\/\//, '');
+              const showTitle = item.title.trim().toLowerCase() !== domain.trim().toLowerCase();
+              return (
             <a
               href={item.url}
               target="_blank"
@@ -45,8 +49,26 @@ const t = portfolioPageContent[locale];
                 />
                 <span class="portfolio-page-card-image-fallback">{item.title}</span>
               </div>
-              <h3 class="portfolio-page-card-title">{item.title}</h3>
+              {showTitle && <h3 class="portfolio-page-card-title">{item.title}</h3>}
+              <div class="portfolio-page-card-meta">
+                <span class="portfolio-page-card-domain">{domain}</span>
+                {item.logo && (
+                  <img
+                    src={item.logo}
+                    alt={`Logo ${item.title}`}
+                    class:list={[
+                      'portfolio-page-card-inline-logo',
+                      (item.title.toLowerCase().includes('primadora') || item.title.toLowerCase().includes('pantheraleo')) &&
+                        'portfolio-page-card-inline-logo--invert-black',
+                    ]}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+              </div>
             </a>
+              );
+            })()}
           </article>
         ))}
       </div>
@@ -116,7 +138,13 @@ const t = portfolioPageContent[locale];
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top center;
     display: block;
+    transition: object-position 4.2s ease-in-out;
+    will-change: object-position;
+  }
+  .portfolio-page-card-link:hover .portfolio-page-card-image {
+    object-position: bottom center;
   }
   .portfolio-page-card-image[data-failed] {
     opacity: 0;
@@ -143,7 +171,37 @@ const t = portfolioPageContent[locale];
     font-weight: 600;
     color: var(--color-brand-ink, #1a1a2e);
     margin: 0;
+    padding: 1rem 1.25rem 0.4rem;
+  }
+  .portfolio-page-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
     padding: 1rem 1.25rem;
+    min-height: 2rem;
+  }
+  .portfolio-page-card-domain {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.875rem;
+    line-height: 1.75rem;
+    color: var(--color-brand-gray, #6b7280);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .portfolio-page-card-inline-logo {
+    height: 1.75rem;
+    width: auto;
+    max-width: 8rem;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+  }
+  .portfolio-page-card-inline-logo--invert-black {
+    filter: brightness(0);
   }
 </style>
 

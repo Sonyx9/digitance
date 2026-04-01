@@ -16,10 +16,14 @@ const labels = footerLabels[locale];
 const billingDetails: Record<Locale, string[]> = {
   cs: [
     'Digitance CZ s. r. o.',
-    'IČO:',
+    'IČO: 248 92 581',
+    'Datová schránka: e6xac7t',
     'Nejsme plátci DPH',
     'Uralská 689/7,',
     '160 00 Praha 6',
+    'Bankovní spojení: Air Bank 3030',
+    'Účet: 3622203017',
+    'IBAN: CZ96 3030 0000 0000 3622 2030 17',
   ],
   sk: [
     'shazucha s. r. o.',
@@ -27,13 +31,20 @@ const billingDetails: Record<Locale, string[]> = {
     'DIČ: 2122358106',
     'IČ DPH: SK2122358106',
     'podľa §7a',
+    'Bankové spojenie: Air Bank 3030',
+    'Účet: 3622203017',
+    'IBAN: CZ96 3030 0000 0000 3622 2030 17',
   ],
   en: [
     'Digitance CZ s. r. o.',
-    'IČO:',
-    'Nejsme plátci DPH',
+    'Company ID: 248 92 581',
+    'Data box ID: e6xac7t',
+    'Not a VAT payer',
     'Uralská 689/7,',
     '160 00 Praha 6',
+    'Bank details: Air Bank 3030',
+    'Account number: 3622203017',
+    'IBAN: CZ96 3030 0000 0000 3622 2030 17',
   ],
 };
 ---
@@ -103,9 +114,19 @@ const billingDetails: Record<Locale, string[]> = {
       <div>
         <h3 class="text-sm font-semibold uppercase tracking-wider text-brand-cloud">{labels.billing}</h3>
         <ul class="mt-4 space-y-1 text-sm text-brand-silver">
-          {billingDetails[locale].map((line) => (
-            <li>{line}</li>
-          ))}
+          {billingDetails[locale].map((line) => {
+            const isBankLine = line.toLowerCase().includes('bank');
+            if (!isBankLine) return <li>{line}</li>;
+
+            const [label, ...rest] = line.split(':');
+            const value = rest.join(':').trim();
+            return (
+              <li class="mt-3">
+                <span class="font-medium text-brand-cloud">{label}:</span>{' '}
+                <span>{value}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>
