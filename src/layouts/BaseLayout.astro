@@ -80,7 +80,12 @@ const contactUrl = getRelativeLocaleUrl(locale, getPathForLocaleWithSlug(locale,
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
     <script is:inline>
-      if (location.protocol === 'http:') {
+      const isLocalHost =
+        location.hostname === 'localhost' ||
+        location.hostname === '127.0.0.1' ||
+        location.hostname === '::1';
+
+      if (location.protocol === 'http:' && !isLocalHost) {
         location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
       }
     </script>

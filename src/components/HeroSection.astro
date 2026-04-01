@@ -4,7 +4,7 @@ import Reveal from './Reveal.astro';
 import Tag from './Tag.astro';
 import HeroGridBg from './HeroGridBg.astro';
 import HeroCta from './HeroCta.astro';
-import { heroBrandNames } from '../data/heroBrands';
+import { portfolioItems } from '../data/portfolioPage';
 import type { Locale } from '../lib/i18n';
 
 interface Props {
@@ -27,6 +27,17 @@ interface Props {
 
 const { t, locale, contactUrl, servicesUrl } = Astro.props;
 const useLines = t.headlineLine1 != null && t.headlineLine2 != null && t.headlineLine3 != null;
+const heroBrandLogos = portfolioItems
+  .filter((item) => Boolean(item.logo))
+  .map((item) => {
+    const lowerTitle = item.title.toLowerCase();
+    const needsInvertBlack = lowerTitle.includes('primadora') || lowerTitle.includes('pantheraleo');
+    return {
+      title: item.title,
+      logo: item.logo!,
+      needsInvertBlack,
+    };
+  });
 ---
 
 <section class="hero-section relative overflow-hidden px-4 pb-8 pt-8 md:px-6 md:pb-12 md:pt-16">
@@ -72,15 +83,31 @@ const useLines = t.headlineLine1 != null && t.headlineLine2 != null && t.headlin
 
     <!-- Referenční loga od začátku do konce (celá šířka sekce) -->
     <div class="brands-carousel-wrap mt-8 md:mt-12 -mx-4 md:-mx-6 px-4 md:px-6">
-      <div class="brands-carousel" aria-label="Partneři a klienti">
+      <div class="brands-carousel" aria-label="Loga projektů">
         <div class="brands-carousel-track">
-          {heroBrandNames.map((name) => (
-            <span class="brands-carousel-item">{name}</span>
+          {heroBrandLogos.map((item) => (
+            <span class="brands-carousel-item">
+              <img
+                src={item.logo}
+                alt={`Logo ${item.title}`}
+                class:list={['brands-carousel-logo', item.needsInvertBlack && 'brands-carousel-logo--invert-black']}
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
           ))}
         </div>
         <div class="brands-carousel-track" aria-hidden="true">
-          {heroBrandNames.map((name) => (
-            <span class="brands-carousel-item">{name}</span>
+          {heroBrandLogos.map((item) => (
+            <span class="brands-carousel-item">
+              <img
+                src={item.logo}
+                alt=""
+                class:list={['brands-carousel-logo', item.needsInvertBlack && 'brands-carousel-logo--invert-black']}
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
           ))}
         </div>
       </div>
@@ -117,16 +144,29 @@ const useLines = t.headlineLine1 != null && t.headlineLine2 != null && t.headlin
   }
   .brands-carousel-item {
     flex-shrink: 0;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: rgb(115 115 115);
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 9rem;
+    height: 2.4rem;
   }
-  .brands-carousel-item::after {
-    content: '+';
-    margin-left: 1.5rem;
-    color: rgb(163 163 163);
-    font-weight: 300;
+  .brands-carousel-logo {
+    max-width: 8.2rem;
+    max-height: 1.8rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(1) contrast(1.05) opacity(0.88);
+    transition: filter 0.25s ease, opacity 0.25s ease;
+  }
+  .brands-carousel-logo--invert-black {
+    filter: grayscale(1) brightness(0) opacity(0.84);
+  }
+  .brands-carousel-item:hover .brands-carousel-logo {
+    filter: grayscale(1) contrast(1.08) opacity(1);
+  }
+  .brands-carousel-item:hover .brands-carousel-logo--invert-black {
+    filter: grayscale(1) brightness(0) opacity(0.95);
   }
   @keyframes brands-scroll {
     0% { transform: translateX(0); }
