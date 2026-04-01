@@ -22,7 +22,7 @@ const { title, description = '', canonicalPath, image, showCta = true } = Astro.
 const locale = Astro.currentLocale as Locale;
 const base = import.meta.env.BASE_URL;
 const site = Astro.site?.href ?? 'https://digitance.cz';
-const canonical = Astro.url.href;
+const canonical = new URL(canonicalPath ?? `${Astro.url.pathname}${Astro.url.search}`, site).href;
 
 const pathname = Astro.url.pathname;
 const pathWithoutBase = base ? pathname.replace(new RegExp(`^${base.replace(/\//g, '\\/')}`), '') : pathname;
@@ -34,7 +34,7 @@ const locales = ['cs', 'sk', 'en'] as const;
 const hreflang = locales.map((loc) => {
   const path = getPathForLocaleWithSlug(loc, pageKey, slug);
   const rel = getRelativeLocaleUrl(loc, path);
-  const url = rel.startsWith('http') ? rel : new URL(rel, Astro.url.origin).href;
+  const url = rel.startsWith('http') ? rel : new URL(rel, site).href;
   return { locale: loc, url };
 });
 
@@ -79,6 +79,11 @@ const contactUrl = getRelativeLocaleUrl(locale, getPathForLocaleWithSlug(locale,
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+    <script is:inline>
+      if (location.protocol === 'http:') {
+        location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
+      }
+    </script>
     <base href={base || '/'} />
   </head>
   <body>
