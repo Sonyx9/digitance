@@ -55,7 +55,6 @@ const ctaCopy = {
     button: 'Send us a message',
   },
 }[locale];
-const contactUrl = getRelativeLocaleUrl(locale, getPathForLocaleWithSlug(locale, 'contact'));
 ---
 
 <!DOCTYPE html>
@@ -101,7 +100,6 @@ const contactUrl = getRelativeLocaleUrl(locale, getPathForLocaleWithSlug(locale,
         ctaBlockHeading={ctaCopy.heading}
         ctaBlockSub={ctaCopy.sub}
         ctaBlockButton={ctaCopy.button}
-        contactUrl={contactUrl}
       />
     )}
     <Footer />
