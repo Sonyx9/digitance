@@ -76,9 +76,19 @@ export const portfolioItems: PortfolioItem[] = [
     screenshot: 'https://lukaskoula.com/wp-content/uploads/2025/05/primadora.webp',
     logo: 'https://cdn.myshoptet.com/usr/www.primadora.cz/user/logos/shop-logo-primadora_white.png',
   },
-  { title: 'venusamoda.sk', url: 'https://venusamoda.sk', screenshot: '/images/portfolio/venusamoda.jpg' },
+  {
+    title: 'venusamoda.sk',
+    url: 'https://venusamoda.sk',
+    screenshot: '/images/portfolio/venusamoda.jpg',
+    logo: 'https://venusamoda.sk/wp-content/uploads/2023/10/venusa-logo-1-2400.webp',
+  },
   { title: 'eatgreen.eco', url: 'https://eatgreen.eco', screenshot: '/images/portfolio/eatgreen.jpg' },
-  { title: 'cisimefasady.sk', url: 'https://cisimefasady.sk', screenshot: '/images/portfolio/cisimefasady.jpg' },
+  {
+    title: 'cisimefasady.sk',
+    url: 'https://cisimefasady.sk',
+    screenshot: '/images/portfolio/cisimefasady.jpg',
+    logo: 'https://cistimefasady.sk/wp-content/uploads/2025/05/Snimka-obrazovky-2025-07-10-o-15.23.22.png',
+  },
   {
     title: 'kurovky.cz',
     url: 'https://kurovky.cz',
