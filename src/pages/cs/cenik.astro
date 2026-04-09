@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getPathForLocale, type Locale } from '../../lib/i18n';
+import { pricingRows } from '../../data/pricing';
+import PricingPageContent from '../../components/PricingPageContent.astro';
+
+const locale = Astro.currentLocale as Locale;
+
+const t = {
+  heroLabel: 'Kolik to stojí',
+  heroTitle: 'Ceník',
+  heroSubLeft: 'Přehledné ceny našich služeb na jednom místě.',
+  note: '',
+  readGuideTitle: 'Jak ceník číst',
+  readGuideItems: [
+    'Jedná se o podrobný ceník našich služeb.',
+    'Cena "od" označuje základní rozsah služby.',
+    'Konečnou cenu potvrzujeme po upřesnění zadání.',
+  ],
+  includedTitle: 'Co je v cenách běžně zahrnuto',
+  includedItems: [
+    'Úvodní konzultace a návrh vhodného postupu.',
+    'Realizace služby v dohodnutém rozsahu.',
+    'Předání výstupů včetně doporučení dalších kroků.',
+  ],
+  outroTitle: 'Důležité podmínky',
+  outroText:
+    'Ceny jsou bez mediálních rozpočtů, licencí třetích stran a placených nástrojů, pokud není uvedeno jinak. U dlouhodobé spolupráce připravujeme individuální nabídku podle cílů projektu.',
+  ctaLabel: 'Domluvit nezávaznou konzultaci',
+};
+---
+
+<BaseLayout title={`${t.heroTitle} — digitance.`} description={t.heroSubLeft}>
+  <PricingPageContent
+    locale={locale}
+    heroLabel={t.heroLabel}
+    heroTitle={t.heroTitle}
+    heroSubLeft={t.heroSubLeft}
+    note={t.note}
+    readGuideTitle={t.readGuideTitle}
+    readGuideItems={t.readGuideItems}
+    includedTitle={t.includedTitle}
+    includedItems={t.includedItems}
+    outroTitle={t.outroTitle}
+    outroText={t.outroText}
+    ctaLabel={t.ctaLabel}
+    ctaHref={getRelativeLocaleUrl(locale, getPathForLocale(locale, 'contact'))}
+    rows={pricingRows}
+  />
+</BaseLayout>

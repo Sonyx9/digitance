@@ -18,6 +18,7 @@ export const navLabels: Record<Locale, Record<string, string>> = {
     home: 'Domů',
     about: 'Kdo jsme',
     services: 'Služby',
+    pricing: 'Ceník',
     portfolio: 'Portfolio',
     reference: 'Reference',
     contact: 'Kontakt',
@@ -26,6 +27,7 @@ export const navLabels: Record<Locale, Record<string, string>> = {
     home: 'Domov',
     about: 'Kto sme',
     services: 'Služby',
+    pricing: 'Cenník',
     portfolio: 'Portfolio',
     reference: 'Referencie',
     contact: 'Kontakt',
@@ -34,6 +36,7 @@ export const navLabels: Record<Locale, Record<string, string>> = {
     home: 'Home',
     about: 'Who we are',
     services: 'Services',
+    pricing: 'Pricing',
     portfolio: 'Portfolio',
     reference: 'Reviews',
     contact: 'Contact',
@@ -42,9 +45,9 @@ export const navLabels: Record<Locale, Record<string, string>> = {
 
 /** Cesty v URL dle jazyka (path bez úvodního /) */
 export const pathByLocale: Record<Locale, Record<string, string>> = {
-  cs: { home: '', about: 'o-nas', services: 'sluzby', contact: 'kontakt', portfolio: 'portfolio', reference: 'reference' },
-  sk: { home: '', about: 'o-nas', services: 'sluzby', contact: 'kontakt', portfolio: 'portfolio', reference: 'referencie' },
-  en: { home: '', about: 'about-us', services: 'services', contact: 'contact', portfolio: 'portfolio', reference: 'references' },
+  cs: { home: '', about: 'o-nas', services: 'sluzby', pricing: 'cenik', contact: 'kontakt', portfolio: 'portfolio', reference: 'reference' },
+  sk: { home: '', about: 'o-nas', services: 'sluzby', pricing: 'cennik', contact: 'kontakt', portfolio: 'portfolio', reference: 'referencie' },
+  en: { home: '', about: 'about-us', services: 'services', pricing: 'pricing', contact: 'contact', portfolio: 'portfolio', reference: 'references' },
 };
 
 export function getPathForLocale(locale: Locale, key: string): string {
@@ -57,6 +60,7 @@ export function pathToPageKey(path: string): { key: string; slug?: string } {
   if (path === 'o-nas' || path === 'about-us') return { key: 'about' };
   if (path === 'kontakt' || path === 'contact') return { key: 'contact' };
   if (path === 'sluzby' || path === 'services') return { key: 'services' };
+  if (path === 'cenik' || path === 'cennik' || path === 'pricing') return { key: 'pricing' };
   if (path.startsWith('sluzby/')) return { key: 'services', slug: path.slice(7) };
   if (path.startsWith('services/')) return { key: 'services', slug: path.slice(9) };
   if (path === 'portfolio') return { key: 'portfolio' };

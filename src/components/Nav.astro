@@ -19,11 +19,12 @@ const serviceLinks: { slug: ServiceSlug; label: string; href: string }[] = servi
   href: getRelativeLocaleUrl(locale, `${servicesPath}/${s.slug}`),
 }));
 
-const navItems: { key: 'about' | 'services' | 'portfolio' | 'reference'; path: string; hash?: string }[] = [
+const navItems: { key: 'about' | 'services' | 'pricing' | 'portfolio' | 'reference'; path: string; hash?: string }[] = [
   { key: 'about', path: getPathForLocale(locale, 'about') },
   { key: 'services', path: getPathForLocale(locale, 'services') },
   { key: 'portfolio', path: getPathForLocale(locale, 'portfolio') },
   { key: 'reference', path: getPathForLocale(locale, 'reference') },
+  { key: 'pricing', path: getPathForLocale(locale, 'pricing') },
 ];
 
 function isActive(path: string, key: string): boolean {
@@ -32,6 +33,7 @@ function isActive(path: string, key: string): boolean {
   const rest = segs.slice(1).join('/');
   if (key === 'about') return rest === path || rest.startsWith(path + '/');
   if (key === 'services') return rest === path || rest.startsWith(path + '/');
+  if (key === 'pricing') return rest === path || rest.startsWith(path + '/');
   if (key === 'portfolio') return rest === path || rest.startsWith(path + '/');
   if (key === 'reference') return rest === path || rest.startsWith(path + '/');
   return false;

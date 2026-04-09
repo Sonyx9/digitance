@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getPathForLocale, type Locale } from '../../lib/i18n';
+import { pricingRows } from '../../data/pricing';
+import PricingPageContent from '../../components/PricingPageContent.astro';
+
+const locale = Astro.currentLocale as Locale;
+
+const t = {
+  heroLabel: 'How much it costs',
+  heroTitle: 'Pricing',
+  heroSubLeft: 'Clear overview of our service pricing in one place.',
+  note: 'Pricing on this page is taken directly from individual service subpages. Where no price is listed on a subpage, it is marked as on request.',
+  ctaLabel: 'Book a free consultation',
+};
+---
+
+<BaseLayout title={`${t.heroTitle} — digitance.`} description={t.heroSubLeft}>
+  <PricingPageContent
+    locale={locale}
+    heroLabel={t.heroLabel}
+    heroTitle={t.heroTitle}
+    heroSubLeft={t.heroSubLeft}
+    note={t.note}
+    ctaLabel={t.ctaLabel}
+    ctaHref={getRelativeLocaleUrl(locale, getPathForLocale(locale, 'contact'))}
+    rows={pricingRows}
+  />
+</BaseLayout>

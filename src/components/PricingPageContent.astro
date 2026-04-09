@@ -1,0 +1,281 @@
+---
+import PageHero from './PageHero.astro';
+import Reveal from './Reveal.astro';
+import type { Locale } from '../lib/i18n';
+import { serviceTitles, type ServiceSlug } from '../data/services';
+import { serviceDescriptions } from '../data/services';
+
+interface PricingRow {
+  slug: ServiceSlug;
+  offers: Record<Locale, { title: string; items: { label: string; price: string }[] }[]>;
+}
+
+interface Props {
+  locale: Locale;
+  heroLabel: string;
+  heroTitle: string;
+  heroSubLeft: string;
+  note: string;
+  readGuideTitle?: string;
+  readGuideItems?: string[];
+  includedTitle?: string;
+  includedItems?: string[];
+  outroTitle?: string;
+  outroText?: string;
+  ctaLabel: string;
+  ctaHref: string;
+  rows: PricingRow[];
+}
+
+const {
+  locale,
+  heroLabel,
+  heroTitle,
+  heroSubLeft,
+  note,
+  readGuideTitle = '',
+  readGuideItems = [],
+  includedTitle = '',
+  includedItems = [],
+  outroTitle = '',
+  outroText = '',
+  ctaLabel,
+  ctaHref,
+  rows,
+} = Astro.props;
+---
+
+<article class="pricing-page">
+  <PageHero heroLabel={heroLabel} heroTitle={heroTitle} heroSubLeft={heroSubLeft} />
+
+  <section class="pricing-section">
+    <div class="pricing-inner">
+      <p class="pricing-note">{note}</p>
+      {(readGuideItems.length > 0 || includedItems.length > 0) && (
+        <div class="pricing-intro-grid">
+          {readGuideItems.length > 0 && (
+            <section class="pricing-intro-card">
+              <h2>{readGuideTitle}</h2>
+              <ul>
+                {readGuideItems.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {includedItems.length > 0 && (
+            <section class="pricing-intro-card">
+              <h2>{includedTitle}</h2>
+              <ul>
+                {includedItems.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+      )}
+
+      <div class="pricing-stack">
+        {rows.map((row) => (
+          <Reveal>
+            <section class="pricing-group">
+              <h2 class="pricing-group-title">{serviceTitles[row.slug][locale]}</h2>
+              <p class="pricing-desc">{serviceDescriptions[row.slug][locale]}</p>
+              {row.offers[locale].map((offer) => (
+                <div class="pricing-offer">
+                  <h3 class="pricing-offer-title">{offer.title}</h3>
+                  <ul class="pricing-list">
+                    {offer.items.map((item) => (
+                      <li>
+                        <span class="pricing-line-label">{item.label}</span>
+                        <span class="pricing-leader" aria-hidden="true"></span>
+                        <strong class="pricing-line-price">{item.price}</strong>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </section>
+          </Reveal>
+        ))}
+      </div>
+
+      {outroText && (
+        <section class="pricing-outro">
+          <h2>{outroTitle}</h2>
+          <p>{outroText}</p>
+        </section>
+      )}
+
+      <div class="pricing-cta-wrap">
+        <a href={ctaHref} class="pricing-cta">{ctaLabel}</a>
+      </div>
+    </div>
+  </section>
+</article>
+
+<style>
+  .pricing-page {
+    min-height: 100vh;
+    background: #fff;
+  }
+  .pricing-section {
+    border-top: 1px solid rgba(26, 26, 46, 0.12);
+    padding: 3rem 1.5rem 4rem;
+  }
+  @media (min-width: 768px) {
+    .pricing-section {
+      padding: 4rem 2rem 5rem;
+    }
+  }
+  .pricing-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+  }
+  .pricing-note {
+    margin: 0 0 1.5rem;
+    color: #5f6687;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .pricing-stack {
+    display: grid;
+    gap: 1.3rem;
+  }
+  .pricing-intro-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    margin-bottom: 1.6rem;
+  }
+  @media (min-width: 900px) {
+    .pricing-intro-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .pricing-intro-card {
+    border: 1px solid #e9ecf3;
+    border-radius: 1rem;
+    background: #f9fbff;
+    padding: 1rem 1.1rem;
+  }
+  .pricing-intro-card h2 {
+    margin: 0 0 0.6rem;
+    font-size: 0.98rem;
+    color: #2a3155;
+    font-weight: 700;
+  }
+  .pricing-intro-card ul {
+    margin: 0;
+    padding: 0 0 0 1rem;
+    display: grid;
+    gap: 0.35rem;
+    color: #455070;
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+  .pricing-group {
+    border: 1px solid #e9ecf3;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    padding: 1.25rem 1.2rem;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .pricing-group:hover {
+    border-color: rgba(53, 58, 97, 0.35);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+  .pricing-group-title {
+    margin: 0 0 0.55rem;
+    color: #1a1a2e;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  .pricing-desc {
+    margin: 0 0 0.9rem;
+    color: #5f6687;
+    font-size: 0.89rem;
+    line-height: 1.45;
+  }
+  .pricing-offer {
+    margin-top: 0.9rem;
+  }
+  .pricing-offer-title {
+    margin: 0 0 0.5rem;
+    color: #353a61;
+    font-size: 0.94rem;
+    font-weight: 600;
+  }
+  .pricing-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.45rem;
+    color: #404761;
+    font-size: 0.93rem;
+    line-height: 1.45;
+  }
+  .pricing-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    border-bottom: 1px dashed #edf0f6;
+    padding: 0.35rem 0 0.5rem;
+  }
+  .pricing-line-label {
+    color: #4b5474;
+    font-size: 0.91rem;
+    line-height: 1.4;
+  }
+  .pricing-leader {
+    flex: 1;
+    border-bottom: 1px dotted #cfd7e6;
+    transform: translateY(-2px);
+  }
+  .pricing-line-price {
+    white-space: nowrap;
+    color: #1a1a2e;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .pricing-cta-wrap {
+    margin-top: 1.75rem;
+    display: flex;
+    justify-content: center;
+  }
+  .pricing-outro {
+    margin-top: 1.6rem;
+    border: 1px solid #e9ecf3;
+    border-radius: 1rem;
+    background: #fff;
+    padding: 1rem 1.1rem;
+  }
+  .pricing-outro h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+    color: #2a3155;
+  }
+  .pricing-outro p {
+    margin: 0;
+    color: #55607f;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .pricing-cta {
+    border-radius: 999px;
+    padding: 0.8rem 1.35rem;
+    background: #f3ad19;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .pricing-cta:hover {
+    background: #e09e14;
+  }
+</style>

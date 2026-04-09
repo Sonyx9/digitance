@@ -6,6 +6,7 @@ export const routePaths = {
   home: '',
   about: 'o-nas',
   services: 'sluzby',
+  pricing: 'cenik',
   serviceDetail: (slug: string) => `sluzby/${slug}`,
   contact: 'kontakt',
 } as const;

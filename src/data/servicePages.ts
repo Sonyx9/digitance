@@ -85,16 +85,17 @@ export const servicePages: ServicePagesMap = {
           type: 'pricing',
           title: 'Cena PPC kampaní web:',
           items: [
-            { label: 'Nastavení kampaní & propojení systémů (GTM, Analytics, Ads)', price: 'od 230 €' },
-            { label: 'Měsíční správa PPC kampaní', price: 'od 80 € / měsíc' },
+            { label: 'Nastavení kampaní & propojení systémů (GTM, Analytics, Ads)', price: 'od 6 520 Kč' },
+            { label: 'Měsíční správa PPC kampaní', price: 'od 2 480 Kč / měsíc' },
           ],
         },
         {
           type: 'pricing',
           title: 'Cena PPC kampaní E-shop:',
           items: [
-            { label: 'Nastavení kampaní & propojení systémů (GTM, GAds, FB)', price: 'od 300 €' },
-            { label: 'Měsíční správa PPC kampaní', price: 'od 100 € / měsíc' },
+            { label: 'Nastavení kampaní & propojení systémů SHOPTET (GTM, GAds, FB)', price: 'od 6 520 Kč' },
+            { label: 'Nastavení kampaní & propojení systémů OSTATNÍ PLATFORMY (GTM, GAds, FB)', price: 'od 7 200 Kč' },
+            { label: 'Měsíční správa PPC kampaní', price: 'od 3 600 Kč / měsíc' },
           ],
         },
       ],
@@ -157,16 +158,17 @@ export const servicePages: ServicePagesMap = {
           type: 'pricing',
           title: 'Cena PPC kampaní web:',
           items: [
-            { label: 'Nastavenie kampaní & prepojenie systémov (GTM, Analytics, Ads)', price: 'od 230 €' },
-            { label: 'Mesačná správa PPC kampaní', price: 'od 80 € / mesiac' },
+            { label: 'Nastavenie kampaní & prepojenie systémov (GTM, Analytics, Ads)', price: 'od 272 €' },
+            { label: 'Mesačná správa PPC kampaní', price: 'od 104 € / mesiac' },
           ],
         },
         {
           type: 'pricing',
           title: 'Cena PPC kampaní E-shop:',
           items: [
-            { label: 'Nastavenie kampaní & prepojenie systémov (GTM, GAds, FB)', price: 'od 300 €' },
-            { label: 'Mesačná správa PPC kampaní', price: 'od 100 € / mesiac' },
+            { label: 'Nastavenie kampaní & prepojenie systémov SHOPTET (GTM, GAds, FB)', price: 'od 272 €' },
+            { label: 'Nastavenie kampaní & prepojenie systémov OSTATNÉ PLATFORMY (GTM, GAds, FB)', price: 'od 300 €' },
+            { label: 'Mesačná správa PPC kampaní', price: 'od 150 € / mesiac' },
           ],
         },
       ],
@@ -229,16 +231,17 @@ export const servicePages: ServicePagesMap = {
           type: 'pricing',
           title: 'PPC campaign pricing – website:',
           items: [
-            { label: 'Campaign setup & system integration (GTM, Analytics, Ads)', price: 'from €230' },
-            { label: 'Monthly PPC management', price: 'from €80 / month' },
+            { label: 'Campaign setup & system integration (GTM, Analytics, Ads)', price: 'from €272' },
+            { label: 'Monthly PPC management', price: 'from €104 / month' },
           ],
         },
         {
           type: 'pricing',
           title: 'PPC campaign pricing – e-shop:',
           items: [
-            { label: 'Campaign setup & system integration (GTM, GAds, FB)', price: 'from €300' },
-            { label: 'Monthly PPC management', price: 'from €100 / month' },
+            { label: 'Campaign setup & system integration SHOPTET (GTM, GAds, FB)', price: 'from €272' },
+            { label: 'Campaign setup & system integration OTHER PLATFORMS (GTM, GAds, FB)', price: 'from €300' },
+            { label: 'Monthly PPC management', price: 'from €150 / month' },
           ],
         },
       ],
@@ -298,6 +301,15 @@ export const servicePages: ServicePagesMap = {
           type: 'step',
           title: 'Výsledky, které vám dávají kontrolu',
           desc: 'S námi máte vždy přehled o tom, jak se váš e-shop vyvíjí. Pravidelně vás informujeme o stavu projektu, doporučeních na zlepšení a možných krocích na podporu prodeje. Díky našemu proaktivnímu přístupu váš Shoptet roste spolu s vaším podnikáním.',
+        },
+        {
+          type: 'pricing',
+          title: 'Cena tvorby e-shopů:',
+          items: [
+            { label: 'Shoptet', price: 'od 44 500 Kč' },
+            { label: 'WooCommerce do 20 produktů', price: 'od 25 600 Kč' },
+            { label: 'Na míru', price: 'dle specifikace' },
+          ],
         },
         {
           type: 'eshopShowcase',
@@ -374,6 +386,15 @@ export const servicePages: ServicePagesMap = {
           desc: 'S nami máš vždy prehľad o tom, ako sa tvoj e-shop vyvíja. Pravidelne ťa informujeme o stave projektu, odporúčaniach na zlepšenie a možných krokoch na podporu predaja. Vďaka nášmu proaktívnemu prístupu tvoj Shoptet rastie spolu s tvojím podnikaním.',
         },
         {
+          type: 'pricing',
+          title: 'Cena tvorby e-shopov:',
+          items: [
+            { label: 'Shoptet', price: 'od 1 855 €' },
+            { label: 'WooCommerce do 20 produktov', price: 'od 1 067 €' },
+            { label: 'Na mieru', price: 'podľa špecifikácie' },
+          ],
+        },
+        {
           type: 'eshopShowcase',
           heading: 'Ukážky e-shopov',
           items: [
@@ -446,6 +467,15 @@ export const servicePages: ServicePagesMap = {
           type: 'step',
           title: 'Results that keep you in control',
           desc: 'With us you always know how your e-shop is doing. We keep you updated on project status, improvement suggestions and next steps to boost sales. Thanks to our proactive approach, your Shoptet grows with your business.',
+        },
+        {
+          type: 'pricing',
+          title: 'E-shop creation pricing:',
+          items: [
+            { label: 'Shoptet', price: 'from €1,855' },
+            { label: 'WooCommerce up to 20 products', price: 'from €1,067' },
+            { label: 'Custom solution', price: 'based on specification' },
+          ],
         },
         {
           type: 'eshopShowcase',
@@ -522,10 +552,28 @@ export const servicePages: ServicePagesMap = {
           type: 'pricing',
           title: 'Ceník tvorby webu (WordPress):',
           items: [
-            { label: 'Start balíček: Landing page (1 stránka, CTA, kontaktní formulář, základní SEO)', price: 'od 585 €' },
-            { label: 'Business web: do 5 podstránek (struktura, design, technické SEO, analytics)', price: 'od 735 €' },
+            { label: 'Start balíček: Landing page (1 stránka, CTA, kontaktní formulář, základní SEO)', price: 'od 16 040 Kč' },
+            { label: 'Business web: do 5 podstránek (struktura, design, technické SEO, analytics)', price: 'od 25 640 Kč' },
             { label: 'Web na míru: rozšířený obsah, specifické funkcionality a integrace', price: 'individuální kalkulace' },
-            { label: 'Programování, úpravy a konfigurace navíc', price: '29,90 € / hod.' },
+            { label: 'Programování, úpravy a konfigurace navíc', price: '1 000 Kč / hod.' },
+          ],
+        },
+        {
+          type: 'pricing',
+          title: 'Jednoduchý HTML web bez administrace:',
+          items: [
+            { label: 'One page', price: 'od 9 800 Kč' },
+            { label: 'Více stránkový prezentační web', price: 'od 16 500 Kč' },
+          ],
+        },
+        {
+          type: 'pricing',
+          title: 'Správa webu (včetně zajištění hostingu):',
+          items: [
+            { label: 'WordPress', price: '5 500 Kč / rok' },
+            { label: 'HTML web', price: '3 500 Kč / rok' },
+            { label: 'Nastavení firemních e-mailů na Seznamu', price: '2 500 Kč' },
+            { label: 'Nastavení firemních e-mailů na jiné platformě', price: '4 500 Kč' },
           ],
         },
       ],
@@ -583,10 +631,28 @@ export const servicePages: ServicePagesMap = {
           type: 'pricing',
           title: 'Website pricing (WordPress):',
           items: [
-            { label: 'Starter package: Landing page (1 page, CTA, contact form, basic SEO)', price: 'from €585' },
-            { label: 'Business website: up to 5 subpages (structure, design, technical SEO, analytics)', price: 'from €735' },
+            { label: 'Starter package: Landing page (1 page, CTA, contact form, basic SEO)', price: 'from €669' },
+            { label: 'Business website: up to 5 subpages (structure, design, technical SEO, analytics)', price: 'from €1,069' },
             { label: 'Custom website: extended content, specific features and integrations', price: 'custom quote' },
-            { label: 'Additional development, edits and configurations', price: '€29.90 / hour' },
+            { label: 'Additional development, edits and configurations', price: '€42 / hour' },
+          ],
+        },
+        {
+          type: 'pricing',
+          title: 'Simple HTML website without CMS:',
+          items: [
+            { label: 'One page', price: 'from €409' },
+            { label: 'Multi-page presentation website', price: 'from €688' },
+          ],
+        },
+        {
+          type: 'pricing',
+          title: 'Website management (including hosting setup):',
+          items: [
+            { label: 'WordPress', price: '€230 / year' },
+            { label: 'HTML website', price: '€146 / year' },
+            { label: 'Business email setup on Seznam', price: '€105' },
+            { label: 'Business email setup on other platform', price: '€188' },
           ],
         },
       ],
@@ -660,10 +726,28 @@ export const servicePages: ServicePagesMap = {
           type: 'pricing',
           title: 'Cenník tvorby webu (WordPress):',
           items: [
-            { label: 'Štart balík: Landing page (1 stránka, CTA, kontaktný formulár, základné SEO)', price: 'od 585 €' },
-            { label: 'Biznis web: do 5 podstránok (štruktúra, dizajn, technické SEO, analytics)', price: 'od 735 €' },
+            { label: 'Štart balík: Landing page (1 stránka, CTA, kontaktný formulár, základné SEO)', price: 'od 669 €' },
+            { label: 'Biznis web: do 5 podstránok (štruktúra, dizajn, technické SEO, analytics)', price: 'od 1 069 €' },
             { label: 'Web na mieru: rozšírený obsah, špecifické funkcionality a integrácie', price: 'individuálna kalkulácia' },
-            { label: 'Programovanie, úpravy a konfigurácie navyše', price: '29,90 € / hod.' },
+            { label: 'Programovanie, úpravy a konfigurácie navyše', price: '42 € / hod.' },
+          ],
+        },
+        {
+          type: 'pricing',
+          title: 'Jednoduchý HTML web bez administrácie:',
+          items: [
+            { label: 'One page', price: 'od 409 €' },
+            { label: 'Viacstránkový prezentačný web', price: 'od 688 €' },
+          ],
+        },
+        {
+          type: 'pricing',
+          title: 'Správa webu (vrátane zabezpečenia hostingu):',
+          items: [
+            { label: 'WordPress', price: '230 € / rok' },
+            { label: 'HTML web', price: '146 € / rok' },
+            { label: 'Nastavenie firemných e-mailov na Sezname', price: '105 €' },
+            { label: 'Nastavenie firemných e-mailov na inej platforme', price: '188 €' },
           ],
         },
       ],
@@ -707,9 +791,9 @@ export const servicePages: ServicePagesMap = {
           type: 'pricing',
           title: 'Cena Emailingu:',
           items: [
-            { label: 'Nastavení automatizace e-mailů', price: '120 €' },
-            { label: 'Nastavení a propojení', price: '60 €' },
-            { label: 'Odeslání jednoho newsletteru s grafikou po nastavení šablony', price: '35 €' },
+            { label: 'Nastavení automatizace e-mailů', price: '2 880 Kč' },
+            { label: 'Nastavení a propojení', price: '1 440 Kč' },
+            { label: 'Odeslání jednoho newsletteru s grafikou po nastavení šablony', price: '840 Kč' },
           ],
         },
       ],
@@ -882,6 +966,13 @@ export const servicePages: ServicePagesMap = {
         { type: 'heading', text: 'Chcete vědět, proč nefunguje to, co má?' },
         { type: 'paragraph', text: 'Web neprodává? Kampaně stojí hodně a nepřinášejí výsledky? Nechte to na nás — zjistíme, co brzdí váš růst.' },
         { type: 'paragraph', text: 'Získejte nezávislý pohled na váš online marketing. Audit vám pomůže ušetřit peníze, čas i frustraci.' },
+        {
+          type: 'pricing',
+          title: 'Cena auditu stránek a kampaní:',
+          items: [
+            { label: 'Úvodní audit stránek a kampaní', price: 'zdarma' },
+          ],
+        },
       ],
     },
     en: {
@@ -922,6 +1013,13 @@ export const servicePages: ServicePagesMap = {
         { type: 'heading', text: 'Want to know why things are not working?' },
         { type: 'paragraph', text: 'Your website does not convert? Campaigns are expensive and underperforming? Leave it to us — we will pinpoint what is holding your growth back.' },
         { type: 'paragraph', text: 'Get an independent perspective on your online marketing. The audit saves you money, time and frustration.' },
+        {
+          type: 'pricing',
+          title: 'Website & campaign audit pricing:',
+          items: [
+            { label: 'Initial website and campaign audit', price: 'free' },
+          ],
+        },
       ],
     },
     sk: {
@@ -1004,6 +1102,13 @@ export const servicePages: ServicePagesMap = {
           type: 'paragraph',
           text: 'Získajte nezávislý pohľad na váš online marketing. Audit vám pomôže ušetriť peniaze, čas aj frustráciu.',
         },
+        {
+          type: 'pricing',
+          title: 'Cena auditu stránok a kampaní:',
+          items: [
+            { label: 'Úvodný audit stránok a kampaní', price: 'zdarma' },
+          ],
+        },
       ],
     },
   },
@@ -1083,6 +1188,13 @@ export const servicePages: ServicePagesMap = {
           text: 'Zviditelněte se u těch, kteří vás hledají. Zvyšte svoji pozici ve vyhledávačích, získejte kvalitní odkazy a proměňte návštěvnost na zákazníky. Chcete vědět, kde vám chybí odkazy a jak je efektivně získat? Ozvěte se nám – připravíme vám linkbuilding strategii na míru.',
           button: 'Chci SEO strategii na míru',
         },
+        {
+          type: 'pricing',
+          title: 'Cena SEO & obsahového marketingu:',
+          items: [
+            { label: 'Cena', price: 'po úvodní specifikaci' },
+          ],
+        },
       ],
     },
     sk: {
@@ -1154,6 +1266,13 @@ export const servicePages: ServicePagesMap = {
           type: 'step',
           title: 'Reportovanie a optimalizácia',
           desc: 'Priebežne sledujeme vývoj a upravujeme stratégiu podľa výsledkov.',
+        },
+        {
+          type: 'pricing',
+          title: 'Cena SEO & obsahového marketingu:',
+          items: [
+            { label: 'Cena', price: 'po úvodnej špecifikácii' },
+          ],
         },
       ],
     },
@@ -1231,6 +1350,13 @@ export const servicePages: ServicePagesMap = {
           type: 'cta',
           text: 'Get discovered by people who are already looking for you. Improve your rankings, gain quality backlinks and turn traffic into customers. Want to know where you are missing links and how to build them effectively? Get in touch — we will prepare a custom link-building strategy for you.',
           button: 'I want a custom SEO strategy',
+        },
+        {
+          type: 'pricing',
+          title: 'SEO & content marketing pricing:',
+          items: [
+            { label: 'Price', price: 'after initial specification' },
+          ],
         },
       ],
     },
