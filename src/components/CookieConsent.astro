@@ -1,0 +1,261 @@
+---
+import type { Locale } from '../lib/i18n';
+
+const locale = Astro.currentLocale as Locale;
+
+const copy = {
+  cs: {
+    title: 'Vaše soukromí',
+    text: 'Používáme cookies pro měření návštěvnosti a výkonu reklam. Nezbytné fungování webu je zajištěno vždy. Svůj výběr můžete kdykoli změnit.',
+    acceptAll: 'Přijmout vše',
+    rejectAll: 'Odmítnout vše',
+    settings: 'Nastavení',
+    save: 'Uložit výběr',
+    necessary: 'Nezbytné',
+    necessaryDesc: 'Zajišťují základní fungování webu. Nelze vypnout.',
+    analytics: 'Analytické',
+    analyticsDesc: 'Pomáhají nám pochopit, jak web používáte (Google Analytics).',
+    marketing: 'Marketingové',
+    marketingDesc: 'Měření reklam a personalizace reklam (Google Ads).',
+  },
+  sk: {
+    title: 'Vaše súkromie',
+    text: 'Používame cookies na meranie návštevnosti a výkonu reklám. Nevyhnutné fungovanie webu je zabezpečené vždy. Svoj výber môžete kedykoľvek zmeniť.',
+    acceptAll: 'Prijať všetko',
+    rejectAll: 'Odmietnuť všetko',
+    settings: 'Nastavenia',
+    save: 'Uložiť výber',
+    necessary: 'Nevyhnutné',
+    necessaryDesc: 'Zabezpečujú základné fungovanie webu. Nemožno vypnúť.',
+    analytics: 'Analytické',
+    analyticsDesc: 'Pomáhajú nám pochopiť, ako web používate (Google Analytics).',
+    marketing: 'Marketingové',
+    marketingDesc: 'Meranie reklám a personalizácia reklám (Google Ads).',
+  },
+  en: {
+    title: 'Your privacy',
+    text: 'We use cookies to measure traffic and ad performance. Strictly necessary features always work. You can change your choice at any time.',
+    acceptAll: 'Accept all',
+    rejectAll: 'Reject all',
+    settings: 'Settings',
+    save: 'Save choices',
+    necessary: 'Necessary',
+    necessaryDesc: 'Required for the site to work. Cannot be turned off.',
+    analytics: 'Analytics',
+    analyticsDesc: 'Help us understand how the site is used (Google Analytics).',
+    marketing: 'Marketing',
+    marketingDesc: 'Ad measurement and ad personalization (Google Ads).',
+  },
+}[locale];
+---
+
+<div id="cookie-consent" class="cc" role="dialog" aria-modal="false" aria-labelledby="cc-title" hidden>
+  <div class="cc-box">
+    <h2 id="cc-title" class="cc-title">{copy.title}</h2>
+    <p class="cc-text">{copy.text}</p>
+
+    <div class="cc-settings" hidden>
+      <label class="cc-row">
+        <input type="checkbox" checked disabled />
+        <span><strong>{copy.necessary}</strong><small>{copy.necessaryDesc}</small></span>
+      </label>
+      <label class="cc-row">
+        <input type="checkbox" data-cc-analytics />
+        <span><strong>{copy.analytics}</strong><small>{copy.analyticsDesc}</small></span>
+      </label>
+      <label class="cc-row">
+        <input type="checkbox" data-cc-marketing />
+        <span><strong>{copy.marketing}</strong><small>{copy.marketingDesc}</small></span>
+      </label>
+    </div>
+
+    <div class="cc-actions">
+      <button type="button" class="cc-btn cc-btn-primary" data-cc-action="accept">{copy.acceptAll}</button>
+      <button type="button" class="cc-btn cc-btn-primary" data-cc-action="reject">{copy.rejectAll}</button>
+      <button type="button" class="cc-btn cc-btn-ghost" data-cc-action="settings">{copy.settings}</button>
+      <button type="button" class="cc-btn cc-btn-ghost" data-cc-action="save" hidden>{copy.save}</button>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  .cc {
+    position: fixed;
+    inset: auto 16px 16px 16px;
+    z-index: 9999;
+    display: flex;
+    justify-content: flex-start;
+    pointer-events: none;
+  }
+  .cc[hidden] {
+    display: none;
+  }
+  .cc-box {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 440px;
+    padding: 20px;
+    border-radius: 16px;
+    background: #232742;
+    color: #fff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .cc-title {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .cc-text {
+    margin: 0;
+    color: #d1d5e6;
+  }
+  .cc-settings {
+    margin-top: 14px;
+    display: grid;
+    gap: 10px;
+  }
+  .cc-settings[hidden],
+  .cc-btn[hidden] {
+    display: none;
+  }
+  .cc-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+  }
+  .cc-row input {
+    margin-top: 3px;
+    accent-color: #8b93ff;
+  }
+  .cc-row span {
+    display: block;
+  }
+  .cc-row small {
+    display: block;
+    color: #aab0cc;
+    font-size: 12px;
+  }
+  .cc-actions {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cc-btn {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 9px 16px;
+    font: inherit;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+  .cc-btn-primary {
+    background: #fff;
+    color: #232742;
+  }
+  .cc-btn-primary:hover {
+    background: #e5e7f3;
+  }
+  .cc-btn-ghost {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  .cc-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  @media (max-width: 480px) {
+    .cc {
+      inset: auto 8px 8px 8px;
+    }
+    .cc-btn {
+      flex: 1 1 auto;
+    }
+  }
+</style>
+
+<script>
+  const KEY = 'digitance_consent_v1';
+
+  type Choice = { analytics: boolean; marketing: boolean };
+
+  const readChoice = (): Choice | null => {
+    try {
+      const raw = localStorage.getItem(KEY);
+      return raw ? (JSON.parse(raw) as Choice) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const apply = (choice: Choice) => {
+    const a = choice.analytics ? 'granted' : 'denied';
+    const m = choice.marketing ? 'granted' : 'denied';
+    (window as any).gtag?.('consent', 'update', {
+      analytics_storage: a,
+      ad_storage: m,
+      ad_user_data: m,
+      ad_personalization: m,
+    });
+  };
+
+  const save = (choice: Choice) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(choice));
+    } catch {
+      /* úložiště nedostupné – volba platí jen pro tuto stránku */
+    }
+    apply(choice);
+    const banner = document.getElementById('cookie-consent');
+    if (banner) banner.hidden = true;
+  };
+
+  const showSettings = (open: boolean) => {
+    const banner = document.getElementById('cookie-consent');
+    if (!banner) return;
+    banner.querySelector<HTMLElement>('.cc-settings')!.hidden = !open;
+    banner.querySelector<HTMLElement>('[data-cc-action="save"]')!.hidden = !open;
+    banner.querySelector<HTMLElement>('[data-cc-action="settings"]')!.hidden = open;
+  };
+
+  const openBanner = () => {
+    const banner = document.getElementById('cookie-consent');
+    if (!banner) return;
+    const stored = readChoice();
+    banner.querySelector<HTMLInputElement>('[data-cc-analytics]')!.checked = !!stored?.analytics;
+    banner.querySelector<HTMLInputElement>('[data-cc-marketing]')!.checked = !!stored?.marketing;
+    showSettings(false);
+    banner.hidden = false;
+  };
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const opener = target.closest('[data-consent-open]');
+    if (opener) {
+      e.preventDefault();
+      openBanner();
+      return;
+    }
+    const action = target.closest<HTMLElement>('[data-cc-action]')?.dataset.ccAction;
+    if (!action) return;
+    const banner = document.getElementById('cookie-consent')!;
+    if (action === 'accept') save({ analytics: true, marketing: true });
+    else if (action === 'reject') save({ analytics: false, marketing: false });
+    else if (action === 'settings') showSettings(true);
+    else if (action === 'save') {
+      save({
+        analytics: banner.querySelector<HTMLInputElement>('[data-cc-analytics]')!.checked,
+        marketing: banner.querySelector<HTMLInputElement>('[data-cc-marketing]')!.checked,
+      });
+    }
+  });
+
+  // Při každém načtení stránky (i při navigaci ViewTransitions) zobraz banner, pokud nemáme uloženou volbu.
+  document.addEventListener('astro:page-load', () => {
+    if (!readChoice()) openBanner();
+  });
+</script>

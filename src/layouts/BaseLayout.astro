@@ -6,6 +6,7 @@ import { pathToPageKey, getPathForLocaleWithSlug, type Locale } from '../lib/i18
 import Nav from '../components/Nav.astro';
 import CtaBlockSection from '../components/CtaBlockSection.astro';
 import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 
 interface Props {
   title: string;
@@ -88,6 +89,45 @@ const ctaCopy = {
         location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
       }
     </script>
+    <script is:inline>
+      // Google Consent Mode v2: default = denied, ale uložená volba návštěvníka se použije
+      // hned jako default (před načtením gtag.js), takže se vracející se uživatelé nezaseknou na denied.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      var consent = { analytics: false, marketing: false };
+      try {
+        var stored = JSON.parse(localStorage.getItem('digitance_consent_v1'));
+        if (stored) consent = { analytics: !!stored.analytics, marketing: !!stored.marketing };
+      } catch (e) {}
+
+      var a = consent.analytics ? 'granted' : 'denied';
+      var m = consent.marketing ? 'granted' : 'denied';
+      gtag('consent', 'default', {
+        analytics_storage: a,
+        ad_storage: m,
+        ad_user_data: m,
+        ad_personalization: m,
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        wait_for_update: 500,
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+
+      gtag('js', new Date());
+      // page_view posíláme ručně (i při navigaci přes ViewTransitions)
+      gtag('config', 'G-3V7M9B8EZY', { send_page_view: false });
+
+      document.addEventListener('astro:page-load', function () {
+        gtag('event', 'page_view', {
+          page_title: document.title,
+          page_location: location.href,
+          page_path: location.pathname,
+        });
+      });
+    </script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-3V7M9B8EZY"></script>
     <base href={base || '/'} />
   </head>
   <body>
@@ -103,5 +143,6 @@ const ctaCopy = {
       />
     )}
     <Footer />
+    <CookieConsent />
   </body>
 </html>

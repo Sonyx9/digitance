@@ -7,10 +7,10 @@ const locale = Astro.currentLocale as Locale;
 const locales: Locale[] = ['cs', 'sk', 'en'];
 const currentYear = new Date().getFullYear();
 
-const footerLabels: Record<Locale, { billing: string; contact: string }> = {
-  cs: { billing: 'Fakturační údaje', contact: 'Kontaktní údaje' },
-  sk: { billing: 'Fakturačné údaje', contact: 'Kontaktné údaje' },
-  en: { billing: 'Billing details', contact: 'Contact details' },
+const footerLabels: Record<Locale, { billing: string; contact: string; cookies: string }> = {
+  cs: { billing: 'Fakturační údaje', contact: 'Kontaktní údaje', cookies: 'Nastavení cookies' },
+  sk: { billing: 'Fakturačné údaje', contact: 'Kontaktné údaje', cookies: 'Nastavenia cookies' },
+  en: { billing: 'Billing details', contact: 'Contact details', cookies: 'Cookie settings' },
 };
 const labels = footerLabels[locale];
 const billingDetails: Record<Locale, string[]> = {
@@ -135,6 +135,7 @@ const billingDetails: Record<Locale, string[]> = {
         <a href="https://lukaskoula.com" class="no-underline text-inherit hover:text-inherit">Lukáš Koula</a>
         {' '}©{currentYear} <span class="footer-logo"><Logo /></span> All rights reserved.
       </span>
+      <a href="#" data-consent-open class="hover:text-brand-white">{labels.cookies}</a>
       <nav class="flex gap-2" aria-label="Language">
         {locales.map((loc) => (
           <a
